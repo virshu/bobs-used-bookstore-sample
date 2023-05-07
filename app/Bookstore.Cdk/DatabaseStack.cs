@@ -59,7 +59,7 @@ public class DatabaseStack : Stack
         _ = new StringParameter(this, $"{Constants.AppName}DbSecret", new StringParameterProps
         {
             ParameterName = $"/{Constants.AppName}/dbsecretsname",
-            StringValue = Database.Secret.SecretName
+            StringValue = Database.Secret!.SecretName
         });
     }
 }

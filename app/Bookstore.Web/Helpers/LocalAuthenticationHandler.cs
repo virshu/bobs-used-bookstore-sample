@@ -43,10 +43,10 @@ namespace Bookstore.Web.Helpers
             ICustomerService customerService = context.RequestServices.GetService<ICustomerService>();
 
             CreateOrUpdateCustomerDto dto = new(
-                identity.FindFirst("Sub").Value,
+                identity.FindFirst("Sub")!.Value,
                 identity.Name,
-                identity.FindFirst("given_name").Value,
-                identity.FindFirst("family_name").Value);
+                identity.FindFirst("given_name")!.Value,
+                identity.FindFirst("family_name")!.Value);
 
             await customerService.CreateOrUpdateCustomerAsync(dto);
         }

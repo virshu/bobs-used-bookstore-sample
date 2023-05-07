@@ -21,7 +21,7 @@ namespace Bookstore.Web.Controllers
         [AllowAnonymous]
         public IActionResult Login(string redirectUri = null)
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = redirectUri ?? Request.GetTypedHeaders().Referer.ToString() });
+            return Challenge(new AuthenticationProperties { RedirectUri = redirectUri ?? Request.GetTypedHeaders().Referer!.ToString() });
         }
 
         public IActionResult LogOut()

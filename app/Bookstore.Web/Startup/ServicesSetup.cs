@@ -101,7 +101,7 @@ namespace Bookstore.Web.Startup
             }
             catch (AmazonSecretsManagerException e)
             {
-                Console.WriteLine($"Failed to read secret {configuration[DbSecretsParameterName]}, error {e.Message}, inner {e.InnerException.Message}");
+                Console.WriteLine($"Failed to read secret {configuration[DbSecretsParameterName]}, error {e.Message}, inner {e.InnerException!.Message}");
             }
             catch (JsonException e)
             {

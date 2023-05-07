@@ -112,9 +112,9 @@ namespace Bookstore.Web.Startup
 
             CreateOrUpdateCustomerDto dto = new(
                 context.Principal.GetSub(),
-                context.Principal.Identity.Name,
-                context.Principal.FindFirst("given_name").Value,
-                context.Principal.FindFirst("family_name").Value);
+                context.Principal!.Identity!.Name!,
+                context.Principal.FindFirst("given_name")!.Value,
+                context.Principal.FindFirst("family_name")!.Value);
 
             await customerService.CreateOrUpdateCustomerAsync(dto);
         }
