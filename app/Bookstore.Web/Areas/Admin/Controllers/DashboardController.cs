@@ -5,44 +5,43 @@ using Bookstore.Web.Areas.Admin.Models.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Bookstore.Web.Areas.Admin.Controllers
+namespace Bookstore.Web.Areas.Admin.Controllers;
+
+public class DashboardController : AdminAreaControllerBase
 {
-    public class DashboardController : AdminAreaControllerBase
+    private readonly IOrderService orderService;
+    private readonly IOfferService offerService;
+    private readonly IBookService bookService;
+
+    public DashboardController(IOrderService orderService, IOfferService offerService, IBookService bookService)
     {
-        private readonly IOrderService orderService;
-        private readonly IOfferService offerService;
-        private readonly IBookService bookService;
+        this.orderService = orderService;
+        this.offerService = offerService;
+        this.bookService = bookService;
+    }
 
-        public DashboardController(IOrderService orderService, IOfferService offerService, IBookService bookService)
+    public async Task<IActionResult> Index()
+    {
+        OrderStatistics orderStats = await orderService.GetStatisticsAsync();
+        OfferStatistics offerStats = await offerService.GetStatisticsAsync();
+        BookStatistics inventoryStats = await bookService.GetStatisticsAsync();
+
+        DashboardIndexViewModel model = new()
         {
-            this.orderService = orderService;
-            this.offerService = offerService;
-            this.bookService = bookService;
-        }
+            PastDueOrders = orderStats.PastDueOrders,
+            PendingOrders = orderStats.PendingOrders,
+            OrdersThisMonth = orderStats.OrdersThisMonth,
+            OrdersTotal = orderStats.OrdersTotal,
 
-        public async Task<IActionResult> Index()
-        {
-            OrderStatistics orderStats = await orderService.GetStatisticsAsync();
-            OfferStatistics offerStats = await offerService.GetStatisticsAsync();
-            BookStatistics inventoryStats = await bookService.GetStatisticsAsync();
+            PendingOffers = offerStats.PendingOffers,
+            OffersThisMonth = offerStats.OffersThisMonth,
+            OffersTotal = offerStats.OffersTotal,
 
-            DashboardIndexViewModel model = new()
-            {
-                PastDueOrders = orderStats.PastDueOrders,
-                PendingOrders = orderStats.PendingOrders,
-                OrdersThisMonth = orderStats.OrdersThisMonth,
-                OrdersTotal = orderStats.OrdersTotal,
+            LowStock = inventoryStats.LowStock,
+            OutOfStock = inventoryStats.OutOfStock,
+            StockTotal = inventoryStats.StockTotal
+        };
 
-                PendingOffers = offerStats.PendingOffers,
-                OffersThisMonth = offerStats.OffersThisMonth,
-                OffersTotal = offerStats.OffersTotal,
-
-                LowStock = inventoryStats.LowStock,
-                OutOfStock = inventoryStats.OutOfStock,
-                StockTotal = inventoryStats.StockTotal
-            };
-
-            return View(model);
-        }
+        return View(model);
     }
 }

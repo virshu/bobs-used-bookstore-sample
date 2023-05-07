@@ -5,39 +5,38 @@ using Bookstore.Web.Helpers;
 using Bookstore.Domain.Orders;
 using Bookstore.Web.ViewModel.Orders;
 
-namespace Bookstore.Web.Controllers
+namespace Bookstore.Web.Controllers;
+
+public class OrdersController : Controller
 {
-    public class OrdersController : Controller
+    private readonly IOrderService orderService;
+
+    public OrdersController(IOrderService orderService)
     {
-        private readonly IOrderService orderService;
+        this.orderService = orderService;
+    }
 
-        public OrdersController(IOrderService orderService)
-        {
-            this.orderService = orderService;
-        }
+    public async Task<IActionResult> Index()
+    {
+        IEnumerable<Order> orders = await orderService.GetOrdersAsync(User.GetSub());
 
-        public async Task<IActionResult> Index()
-        {
-            IEnumerable<Order> orders = await orderService.GetOrdersAsync(User.GetSub());
+        return View(new OrderIndexViewModel(orders));
+    }
 
-            return View(new OrderIndexViewModel(orders));
-        }
+    public async Task<IActionResult> Details(int id)
+    {
+        Order order = await orderService.GetOrderAsync(id);
 
-        public async Task<IActionResult> Details(int id)
-        {
-            Order order = await orderService.GetOrderAsync(id);
+        return View(new OrderDetailsViewModel(order));
+    }
 
-            return View(new OrderDetailsViewModel(order));
-        }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        CancelOrderDto dto = new(User.GetSub(), id);
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            CancelOrderDto dto = new(User.GetSub(), id);
+        await orderService.CancelOrderAsync(dto);
 
-            await orderService.CancelOrderAsync(dto);
-
-            return RedirectToAction("Index");
-        }
+        return RedirectToAction("Index");
     }
 }

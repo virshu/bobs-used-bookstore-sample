@@ -1,7 +1,6 @@
-﻿namespace Bookstore.Domain
+﻿namespace Bookstore.Domain;
+
+public interface IImageValidationService
 {
-    public interface IImageValidationService
-    {
-        public Task<bool> IsSafeAsync(Stream? image);
-    }
+    public Task<bool> IsSafeAsync(Stream? image);
 }

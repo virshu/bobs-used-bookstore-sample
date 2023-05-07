@@ -1,25 +1,24 @@
 ﻿using Bookstore.Domain.Books;
 
-namespace Bookstore.Domain.Orders
+namespace Bookstore.Domain.Orders;
+
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        protected internal Task<Order> GetAsync(int id);
+    protected internal Task<Order> GetAsync(int id);
 
-        protected internal Task<Order> GetAsync(int id, string sub);
+    protected internal Task<Order> GetAsync(int id, string sub);
 
-        protected internal Task<IEnumerable<Book>> ListBestSellingBooksAsync(int count);
+    protected internal Task<IEnumerable<Book>> ListBestSellingBooksAsync(int count);
 
-        protected internal Task<IPaginatedList<Order>> ListAsync(OrderFilters filters, int pageIndex = 1, int pageSize = 10);
+    protected internal Task<IPaginatedList<Order>> ListAsync(OrderFilters filters, int pageIndex = 1, int pageSize = 10);
 
-        protected internal Task<IEnumerable<Order>> ListAsync(string sub);
+    protected internal Task<IEnumerable<Order>> ListAsync(string sub);
 
-        protected internal Task AddAsync(Order order);
+    protected internal Task AddAsync(Order order);
 
-        protected internal Task<OrderStatistics> GetStatisticsAsync();
+    protected internal Task<OrderStatistics> GetStatisticsAsync();
 
-        protected internal Task SaveChangesAsync();
+    protected internal Task SaveChangesAsync();
 
         
-    }
 }

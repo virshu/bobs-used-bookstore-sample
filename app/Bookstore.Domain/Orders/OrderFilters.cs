@@ -1,11 +1,10 @@
-﻿namespace Bookstore.Domain.Orders
+﻿namespace Bookstore.Domain.Orders;
+
+public class OrderFilters
 {
-    public class OrderFilters
-    {
-        public OrderStatus? OrderStatusFilter { get; set; }
+    public OrderStatus? OrderStatusFilter { get; set; }
 
-        public DateTime? OrderDateFromFilter { get; set; }
+    public DateTime? OrderDateFromFilter { get; set; }
 
-        public DateTime? OrderDateToFilter { get; set; }
-    }
+    public DateTime? OrderDateToFilter { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace Bookstore.Domain.ReferenceData
+﻿namespace Bookstore.Domain.ReferenceData;
+
+public class ReferenceDataFilters
 {
-    public class ReferenceDataFilters
-    {
-        public ReferenceDataType? ReferenceDataType { get; set; }
-    }
+    public ReferenceDataType? ReferenceDataType { get; set; }
 }

@@ -4,32 +4,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bookstore.Web.ViewModel.Orders
+namespace Bookstore.Web.ViewModel.Orders;
+
+public class OrderIndexViewModel
 {
-    public class OrderIndexViewModel
-    {
-        public List<OrderIndexItemViewModel> OrderItems { get; set; } = new();
+    public List<OrderIndexItemViewModel> OrderItems { get; set; } = new();
 
-        public OrderIndexViewModel(IEnumerable<Order> orders)
+    public OrderIndexViewModel(IEnumerable<Order> orders)
+    {
+        OrderItems = orders.Select(x => new OrderIndexItemViewModel
         {
-            OrderItems = orders.Select(x => new OrderIndexItemViewModel
-            {
-                Id = x.Id,
-                DeliveryDate = x.DeliveryDate,
-                OrderStatus = x.OrderStatus.GetDescription(),
-                SubTotal = x.SubTotal
-            }).ToList();
-        }
+            Id = x.Id,
+            DeliveryDate = x.DeliveryDate,
+            OrderStatus = x.OrderStatus.GetDescription(),
+            SubTotal = x.SubTotal
+        }).ToList();
     }
+}
 
-    public class OrderIndexItemViewModel
-    {
-        public int Id { get; set; }
+public class OrderIndexItemViewModel
+{
+    public int Id { get; set; }
 
-        public decimal SubTotal { get; set; }
+    public decimal SubTotal { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+    public DateTime DeliveryDate { get; set; }
 
-        public string OrderStatus { get; set; }
-    }
+    public string OrderStatus { get; set; }
 }

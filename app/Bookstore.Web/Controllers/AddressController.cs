@@ -6,74 +6,73 @@ using Bookstore.Web.ViewModel.Address;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Bookstore.Web.Controllers
+namespace Bookstore.Web.Controllers;
+
+public class AddressController : Controller
 {
-    public class AddressController : Controller
+    private readonly IAddressService addressService;
+    private readonly ICustomerService customerService;
+
+    public AddressController(IAddressService addressService, ICustomerService customerService)
     {
-        private readonly IAddressService addressService;
-        private readonly ICustomerService customerService;
+        this.addressService = addressService;
+        this.customerService = customerService;
+    }
 
-        public AddressController(IAddressService addressService, ICustomerService customerService)
-        {
-            this.addressService = addressService;
-            this.customerService = customerService;
-        }
+    public async Task<IActionResult> Index()
+    {
+        IEnumerable<Address> addresses = await addressService.GetAddressesAsync(User.GetSub());
 
-        public async Task<IActionResult> Index()
-        {
-            IEnumerable<Address> addresses = await addressService.GetAddressesAsync(User.GetSub());
+        return View(new AddressIndexViewModel(addresses));
+    }
 
-            return View(new AddressIndexViewModel(addresses));
-        }
+    public IActionResult Create(string returnUrl)
+    {
+        AddressCreateUpdateViewModel model = new(returnUrl);
 
-        public IActionResult Create(string returnUrl)
-        {
-            AddressCreateUpdateViewModel model = new(returnUrl);
+        return View("CreateUpdate", model);
+    }
 
-            return View("CreateUpdate", model);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(AddressCreateUpdateViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
 
-        [HttpPost]
-        public async Task<IActionResult> Create(AddressCreateUpdateViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
+        CreateAddressDto dto = new(model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
 
-            CreateAddressDto dto = new(model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
+        await addressService.CreateAddressAsync(dto);
 
-            await addressService.CreateAddressAsync(dto);
+        return Redirect(model.ReturnUrl);
+    }
 
-            return Redirect(model.ReturnUrl);
-        }
+    public async Task<IActionResult> Update(int id, string returnUrl)
+    {
+        Address address = await addressService.GetAddressAsync(User.GetSub(), id);
 
-        public async Task<IActionResult> Update(int id, string returnUrl)
-        {
-            Address address = await addressService.GetAddressAsync(User.GetSub(), id);
+        return View("CreateUpdate", new AddressCreateUpdateViewModel(address, returnUrl));
+    }
 
-            return View("CreateUpdate", new AddressCreateUpdateViewModel(address, returnUrl));
-        }
+    [HttpPost]
+    public async Task<IActionResult> Update(AddressCreateUpdateViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
 
-        [HttpPost]
-        public async Task<IActionResult> Update(AddressCreateUpdateViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
+        UpdateAddressDto dto = new(model.Id, model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
 
-            UpdateAddressDto dto = new(model.Id, model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
+        await addressService.UpdateAddressAsync(dto);
 
-            await addressService.UpdateAddressAsync(dto);
+        return Redirect(model.ReturnUrl);
+    }
 
-            return Redirect(model.ReturnUrl);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        DeleteAddressDto dto = new(id, User.GetSub());
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            DeleteAddressDto dto = new(id, User.GetSub());
+        await addressService.DeleteAddressAsync(dto);
 
-            await addressService.DeleteAddressAsync(dto);
+        this.SetNotification("Address deleted");
 
-            this.SetNotification("Address deleted");
-
-            return RedirectToAction(nameof(Index));
-        }
+        return RedirectToAction(nameof(Index));
     }
 }

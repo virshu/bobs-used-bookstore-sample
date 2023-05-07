@@ -6,42 +6,41 @@ using Bookstore.Domain.Customers;
 using Bookstore.Domain.Carts;
 using Bookstore.Web.ViewModel.ShoppingCart;
 
-namespace Bookstore.Web.Controllers
+namespace Bookstore.Web.Controllers;
+
+[AllowAnonymous]
+public class ShoppingCartController : Controller
 {
-    [AllowAnonymous]
-    public class ShoppingCartController : Controller
+    private readonly ICustomerService customerService;
+    private readonly IShoppingCartService shoppingCartService;
+
+    public ShoppingCartController(ICustomerService customerService, IShoppingCartService shoppingCartService)
     {
-        private readonly ICustomerService customerService;
-        private readonly IShoppingCartService shoppingCartService;
+        this.customerService = customerService;
+        this.shoppingCartService = shoppingCartService;
+    }
 
-        public ShoppingCartController(ICustomerService customerService, IShoppingCartService shoppingCartService)
-        {
-            this.customerService = customerService;
-            this.shoppingCartService = shoppingCartService;
-        }
+    public async Task<IActionResult> Index()
+    {
+        ShoppingCart shoppingCart = await shoppingCartService.GetShoppingCartAsync(HttpContext.GetShoppingCartCorrelationId());
 
-        public async Task<IActionResult> Index()
-        {
-            ShoppingCart shoppingCart = await shoppingCartService.GetShoppingCartAsync(HttpContext.GetShoppingCartCorrelationId());
+        return View(new ShoppingCartIndexViewModel(shoppingCart));
+    }
 
-            return View(new ShoppingCartIndexViewModel(shoppingCart));
-        }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int shoppingCartItemId)
+    {
+        DeleteShoppingCartItemDto dto = new(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int shoppingCartItemId)
-        {
-            DeleteShoppingCartItemDto dto = new(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
+        await shoppingCartService.DeleteShoppingCartItemAsync(dto);
 
-            await shoppingCartService.DeleteShoppingCartItemAsync(dto);
+        this.SetNotification("Item removed from shopping cart.");
 
-            this.SetNotification("Item removed from shopping cart.");
+        return RedirectToAction(nameof(Index));
+    }
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
+    public IActionResult Error()
+    {
+        return View();
     }
 }

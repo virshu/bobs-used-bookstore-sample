@@ -2,42 +2,41 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Bookstore.Data.FileServices
+namespace Bookstore.Data.FileServices;
+
+public class LocalFileService : IFileService
 {
-    public class LocalFileService : IFileService
+    private readonly string webRootPath;
+
+    public LocalFileService(string webRootPath)
     {
-        private readonly string webRootPath;
+        this.webRootPath = webRootPath;
+    }
 
-        public LocalFileService(string webRootPath)
-        {
-            this.webRootPath = webRootPath;
-        }
+    // The interface defines an async operation, however System.IO.File
+    // does not expose an async delete method.
+    public Task DeleteAsync(string filePath)
+    {
+        if (File.Exists(filePath)) File.Delete(filePath);
 
-        // The interface defines an async operation, however System.IO.File
-        // does not expose an async delete method.
-        public Task DeleteAsync(string filePath)
-        {
-            if (File.Exists(filePath)) File.Delete(filePath);
+        return Task.CompletedTask;
+    }
 
-            return Task.CompletedTask;
-        }
+    public async Task<string> SaveAsync(Stream file, string filename)
+    {
+        if (file == null) return null;
 
-        public async Task<string> SaveAsync(Stream file, string filename)
-        {
-            if (file == null) return null;
+        string imageFolder = Path.Combine(webRootPath, "images/coverimages");
+        string uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
 
-            string imageFolder = Path.Combine(webRootPath, "images/coverimages");
-            string uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
+        if (!Directory.Exists(imageFolder)) Directory.CreateDirectory(imageFolder);
 
-            if (!Directory.Exists(imageFolder)) Directory.CreateDirectory(imageFolder);
+        using FileStream filestream = new(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
 
-            using FileStream filestream = new(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
+        await file.CopyToAsync(filestream);
 
-            await file.CopyToAsync(filestream);
+        await filestream.FlushAsync();
 
-            await filestream.FlushAsync();
-
-            return $"/images/coverimages/{uniqueFilename}";
-        }
+        return $"/images/coverimages/{uniqueFilename}";
     }
 }

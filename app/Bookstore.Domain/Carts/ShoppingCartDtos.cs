@@ -1,12 +1,11 @@
-﻿namespace Bookstore.Domain.Carts
-{
-    public record AddToShoppingCartDto(string CorrelationId, int BookId, int Quantity);
+﻿namespace Bookstore.Domain.Carts;
 
-    public record AddToWishlistDto(string CorrelationId, int BookId);
+public record AddToShoppingCartDto(string CorrelationId, int BookId, int Quantity);
 
-    public record MoveWishlistItemToShoppingCartDto(string CorrelationId, int ShoppingCartItemId);
+public record AddToWishlistDto(string CorrelationId, int BookId);
 
-    public record MoveAllWishlistItemsToShoppingCartDto(string CorrelationId);
+public record MoveWishlistItemToShoppingCartDto(string CorrelationId, int ShoppingCartItemId);
 
-    public record DeleteShoppingCartItemDto(string CorrelationId, int ShoppingCartItemId);
-}
+public record MoveAllWishlistItemsToShoppingCartDto(string CorrelationId);
+
+public record DeleteShoppingCartItemDto(string CorrelationId, int ShoppingCartItemId);

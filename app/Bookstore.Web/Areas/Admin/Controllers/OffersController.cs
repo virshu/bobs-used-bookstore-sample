@@ -6,60 +6,59 @@ using Bookstore.Domain.Offers;
 using Bookstore.Domain.ReferenceData;
 using Bookstore.Web.Areas.Admin.Models.Offers;
 
-namespace Bookstore.Web.Areas.Admin.Controllers
+namespace Bookstore.Web.Areas.Admin.Controllers;
+
+public class OffersController : AdminAreaControllerBase
 {
-    public class OffersController : AdminAreaControllerBase
+    private readonly IOfferService offerService;
+    private readonly IReferenceDataService referenceDataService;
+
+    public OffersController(IOfferService offerService, IReferenceDataService referenceDataService)
     {
-        private readonly IOfferService offerService;
-        private readonly IReferenceDataService referenceDataService;
+        this.offerService = offerService;
+        this.referenceDataService = referenceDataService;
+    }
 
-        public OffersController(IOfferService offerService, IReferenceDataService referenceDataService)
-        {
-            this.offerService = offerService;
-            this.referenceDataService = referenceDataService;
-        }
+    public async Task<IActionResult> Index(OfferFilters filters, int pageIndex = 1, int pageSize = 10)
+    {
+        IPaginatedList<Offer> offers = await offerService.GetOffersAsync(filters, pageIndex, pageSize);
+        IEnumerable<ReferenceDataItem> referenceData = await referenceDataService.GetAllReferenceDataAsync();
 
-        public async Task<IActionResult> Index(OfferFilters filters, int pageIndex = 1, int pageSize = 10)
-        {
-            IPaginatedList<Offer> offers = await offerService.GetOffersAsync(filters, pageIndex, pageSize);
-            IEnumerable<ReferenceDataItem> referenceData = await referenceDataService.GetAllReferenceDataAsync();
+        return View(new OfferIndexViewModel(offers, referenceData));
+    }
 
-            return View(new OfferIndexViewModel(offers, referenceData));
-        }
+    [HttpPost]
+    public async Task<IActionResult> ApproveAsync(int id)
+    {
+        return await UpdateOfferStatus(id, OfferStatus.Approved, "The offer has been approved");
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> ApproveAsync(int id)
-        {
-            return await UpdateOfferStatus(id, OfferStatus.Approved, "The offer has been approved");
-        }
+    [HttpPost]
+    public async Task<IActionResult> RejectAsync(int id)
+    {
+        return await UpdateOfferStatus(id, OfferStatus.Rejected, "The offer has been rejected");
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> RejectAsync(int id)
-        {
-            return await UpdateOfferStatus(id, OfferStatus.Rejected, "The offer has been rejected");
-        }
+    [HttpPost]
+    public async Task<IActionResult> ReceivedAsync(int id)
+    {
+        return await UpdateOfferStatus(id, OfferStatus.Received, "The book has been received");
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> ReceivedAsync(int id)
-        {
-            return await UpdateOfferStatus(id, OfferStatus.Received, "The book has been received");
-        }
+    [HttpPost]
+    public async Task<IActionResult> PaidAsync(int id)
+    {
+        return await UpdateOfferStatus(id, OfferStatus.Paid, "The customer has been paid");
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> PaidAsync(int id)
-        {
-            return await UpdateOfferStatus(id, OfferStatus.Paid, "The customer has been paid");
-        }
+    private async Task<IActionResult> UpdateOfferStatus(int id, OfferStatus status, string message)
+    {
+        UpdateOfferStatusDto dto = new(id, status);
 
-        private async Task<IActionResult> UpdateOfferStatus(int id, OfferStatus status, string message)
-        {
-            UpdateOfferStatusDto dto = new(id, status);
+        await offerService.UpdateOfferStatusAsync(dto);
 
-            await offerService.UpdateOfferStatusAsync(dto);
+        TempData["Message"] = message;
 
-            TempData["Message"] = message;
-
-            return RedirectToAction("Index");
-        }
+        return RedirectToAction("Index");
     }
 }

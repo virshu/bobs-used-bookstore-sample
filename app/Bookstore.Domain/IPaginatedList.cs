@@ -1,21 +1,18 @@
-﻿using System.Linq.Expressions;
+﻿namespace Bookstore.Domain;
 
-namespace Bookstore.Domain
+public interface IPaginatedList<T> : IList<T>
 {
-    public interface IPaginatedList<T> : IList<T>
-    {
-        bool HasNextPage { get; }
+    bool HasNextPage { get; }
 
-        bool HasPreviousPage { get; }
+    bool HasPreviousPage { get; }
 
-        int PageIndex { get; }
+    int PageIndex { get; }
 
-        int TotalPages { get; }
+    int TotalPages { get; }
 
-        Task PopulateAsync();
+    Task PopulateAsync();
 
-        IEnumerable<int> GetPageList(int count);
+    IEnumerable<int> GetPageList(int count);
 
-        IPaginatedList<TConvertTo> ConvertTo<TConvertTo>(Func<T, TConvertTo> expression);
-    }
+    IPaginatedList<TConvertTo> ConvertTo<TConvertTo>(Func<T, TConvertTo> expression);
 }

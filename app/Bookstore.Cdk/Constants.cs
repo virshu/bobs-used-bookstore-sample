@@ -1,7 +1,6 @@
-﻿namespace SharedInfrastructure
+﻿namespace SharedInfrastructure;
+
+internal static class Constants
 {
-    internal static class Constants
-    {
-        internal static readonly string AppName = "BobsBookstore";
-    }
+    internal static readonly string AppName = "BobsBookstore";
 }

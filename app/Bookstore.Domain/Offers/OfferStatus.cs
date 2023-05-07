@@ -1,22 +1,21 @@
 ﻿using System.ComponentModel;
 
-namespace Bookstore.Domain.Offers
+namespace Bookstore.Domain.Offers;
+
+public enum OfferStatus
 {
-    public enum OfferStatus
-    {
-        [Description("Pending Approval")]
-        PendingApproval = 0,
+    [Description("Pending Approval")]
+    PendingApproval = 0,
 
-        [Description("Approved/Awaiting Shipment from Customer")]
-        Approved = 1,
+    [Description("Approved/Awaiting Shipment from Customer")]
+    Approved = 1,
 
-        [Description("Shipment Receipt Confirmed")]
-        Received = 2,
+    [Description("Shipment Receipt Confirmed")]
+    Received = 2,
 
-        [Description("Payment Completed")]
-        Paid = 3,
+    [Description("Payment Completed")]
+    Paid = 3,
 
-        [Description("Rejected")]
-        Rejected = 4
-    }
+    [Description("Rejected")]
+    Rejected = 4
 }

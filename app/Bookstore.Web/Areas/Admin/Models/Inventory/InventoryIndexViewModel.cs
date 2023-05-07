@@ -6,81 +6,80 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bookstore.Web.Areas.Admin.Models.Inventory
+namespace Bookstore.Web.Areas.Admin.Models.Inventory;
+
+public class InventoryIndexViewModel : PaginatedViewModel
 {
-    public class InventoryIndexViewModel : PaginatedViewModel
+
+    public List<InventoryIndexListItemViewModel> Items { get; set; } = new();
+
+    public BookFilters Filters { get; set; } = new();
+
+    public IEnumerable<SelectListItem> Publishers { get; set; } = new List<SelectListItem>();
+
+    public IEnumerable<SelectListItem> BookTypes { get; set; } = new List<SelectListItem>();
+
+    public IEnumerable<SelectListItem> Genres { get; set; } = new List<SelectListItem>();
+
+    public IEnumerable<SelectListItem> BookConditions { get; set; } = new List<SelectListItem>();
+
+    public InventoryIndexViewModel() { }
+
+    public InventoryIndexViewModel(IPaginatedList<Book> books, IEnumerable<ReferenceDataItem> referenceDataItems)
     {
-
-        public List<InventoryIndexListItemViewModel> Items { get; set; } = new();
-
-        public BookFilters Filters { get; set; } = new();
-
-        public IEnumerable<SelectListItem> Publishers { get; set; } = new List<SelectListItem>();
-
-        public IEnumerable<SelectListItem> BookTypes { get; set; } = new List<SelectListItem>();
-
-        public IEnumerable<SelectListItem> Genres { get; set; } = new List<SelectListItem>();
-
-        public IEnumerable<SelectListItem> BookConditions { get; set; } = new List<SelectListItem>();
-
-        public InventoryIndexViewModel() { }
-
-        public InventoryIndexViewModel(IPaginatedList<Book> books, IEnumerable<ReferenceDataItem> referenceDataItems)
+        foreach (Book book in books)
         {
-            foreach (Book book in books)
+            Items.Add(new InventoryIndexListItemViewModel
             {
-                Items.Add(new InventoryIndexListItemViewModel
-                {
-                    Id = book.Id,
-                    Name = book.Name,
-                    Author = book.Author,
-                    BookType = book.BookType.Text,
-                    Condition = book.Condition.Text,
-                    Genre = book.Genre.Text,
-                    Publisher = book.Publisher.Text,
-                    UpdatedOn = book.UpdatedOn,
-                    Year = book.Year.GetValueOrDefault(),
-                    Price = book.Price,
-                    Quantity = book.Quantity
-                });
-            }
-
-            PageIndex = books.PageIndex;
-            PageSize = books.Count;
-            PageCount = books.TotalPages;
-            HasNextPage = books.HasNextPage;
-            HasPreviousPage = books.HasPreviousPage;
-            PaginationButtons = books.GetPageList(5).ToList();
-
-            BookConditions = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Condition).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
-            BookTypes = referenceDataItems.Where(x => x.DataType == ReferenceDataType.BookType).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
-            Genres = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Genre).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
-            Publishers = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Publisher).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
+                Id = book.Id,
+                Name = book.Name,
+                Author = book.Author,
+                BookType = book.BookType.Text,
+                Condition = book.Condition.Text,
+                Genre = book.Genre.Text,
+                Publisher = book.Publisher.Text,
+                UpdatedOn = book.UpdatedOn,
+                Year = book.Year.GetValueOrDefault(),
+                Price = book.Price,
+                Quantity = book.Quantity
+            });
         }
+
+        PageIndex = books.PageIndex;
+        PageSize = books.Count;
+        PageCount = books.TotalPages;
+        HasNextPage = books.HasNextPage;
+        HasPreviousPage = books.HasPreviousPage;
+        PaginationButtons = books.GetPageList(5).ToList();
+
+        BookConditions = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Condition).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
+        BookTypes = referenceDataItems.Where(x => x.DataType == ReferenceDataType.BookType).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
+        Genres = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Genre).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
+        Publishers = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Publisher).Select(x => new SelectListItem(x.Text, x.Id.ToString()));
     }
+}
 
-    public class InventoryIndexListItemViewModel
-    {
-        public int Id { get; set; }
+public class InventoryIndexListItemViewModel
+{
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string Author { get; set; }
+    public string Author { get; set; }
 
-        public int Year { get; set; }
+    public int Year { get; set; }
 
-        public string Publisher { get; set; }
+    public string Publisher { get; set; }
 
-        public string Genre { get; set; }
+    public string Genre { get; set; }
 
-        public string BookType { get; set; }
+    public string BookType { get; set; }
 
-        public string Condition { get; set; }
+    public string Condition { get; set; }
 
-        public decimal Price { get; set; }
+    public decimal Price { get; set; }
 
-        public int Quantity { get; set; }
+    public int Quantity { get; set; }
 
-        public DateTime UpdatedOn { get; set; }
-    }
+    public DateTime UpdatedOn { get; set; }
 }

@@ -4,58 +4,57 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Bookstore.Domain;
 
-namespace Bookstore.Web.Areas.Admin.Controllers
+namespace Bookstore.Web.Areas.Admin.Controllers;
+
+public class ReferenceDataController : AdminAreaControllerBase
 {
-    public class ReferenceDataController : AdminAreaControllerBase
+    private readonly IReferenceDataService referenceDataService;
+
+    public ReferenceDataController(IReferenceDataService referenceDataService)
     {
-        private readonly IReferenceDataService referenceDataService;
+        this.referenceDataService = referenceDataService;
+    }
 
-        public ReferenceDataController(IReferenceDataService referenceDataService)
-        {
-            this.referenceDataService = referenceDataService;
-        }
+    public async Task<IActionResult> Index(ReferenceDataFilters filters, int pageIndex = 1, int pageSize = 10)
+    {
+        IPaginatedList<ReferenceDataItem> referenceDataItems = await referenceDataService.GetReferenceDataAsync(filters, pageIndex, pageSize);
 
-        public async Task<IActionResult> Index(ReferenceDataFilters filters, int pageIndex = 1, int pageSize = 10)
-        {
-            IPaginatedList<ReferenceDataItem> referenceDataItems = await referenceDataService.GetReferenceDataAsync(filters, pageIndex, pageSize);
+        return View(new ReferenceDataIndexViewModel(referenceDataItems, filters));
+    }
 
-            return View(new ReferenceDataIndexViewModel(referenceDataItems, filters));
-        }
+    public IActionResult Create(ReferenceDataType? selectedReferenceDataType = null)
+    {
+        ReferenceDataItemCreateUpdateViewModel model = new();
 
-        public IActionResult Create(ReferenceDataType? selectedReferenceDataType = null)
-        {
-            ReferenceDataItemCreateUpdateViewModel model = new();
+        if (selectedReferenceDataType.HasValue) model.SelectedReferenceDataType = selectedReferenceDataType.Value;
 
-            if (selectedReferenceDataType.HasValue) model.SelectedReferenceDataType = selectedReferenceDataType.Value;
+        return View("CreateUpdate", model);
+    }
 
-            return View("CreateUpdate", model);
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(ReferenceDataItemCreateUpdateViewModel model)
+    {
+        CreateReferenceDataItemDto dto = new(model.SelectedReferenceDataType, model.Text);
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ReferenceDataItemCreateUpdateViewModel model)
-        {
-            CreateReferenceDataItemDto dto = new(model.SelectedReferenceDataType, model.Text);
+        await referenceDataService.CreateAsync(dto);
 
-            await referenceDataService.CreateAsync(dto);
+        return RedirectToAction("Index");
+    }
 
-            return RedirectToAction("Index");
-        }
+    public async Task<IActionResult> Update(int id)
+    {
+        ReferenceDataItem referenceDataItem = await referenceDataService.GetReferenceDataItemAsync(id);
 
-        public async Task<IActionResult> Update(int id)
-        {
-            ReferenceDataItem referenceDataItem = await referenceDataService.GetReferenceDataItemAsync(id);
+        return View("CreateUpdate", new ReferenceDataItemCreateUpdateViewModel(referenceDataItem));
+    }
 
-            return View("CreateUpdate", new ReferenceDataItemCreateUpdateViewModel(referenceDataItem));
-        }
+    [HttpPost]
+    public async Task<IActionResult> Update(ReferenceDataItemCreateUpdateViewModel model)
+    {
+        UpdateReferenceDataItemDto dto = new(model.Id, model.SelectedReferenceDataType, model.Text);
 
-        [HttpPost]
-        public async Task<IActionResult> Update(ReferenceDataItemCreateUpdateViewModel model)
-        {
-            UpdateReferenceDataItemDto dto = new(model.Id, model.SelectedReferenceDataType, model.Text);
+        await referenceDataService.UpdateAsync(dto);
 
-            await referenceDataService.UpdateAsync(dto);
-
-            return RedirectToAction("Index");
-        }
+        return RedirectToAction("Index");
     }
 }

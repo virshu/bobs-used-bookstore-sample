@@ -1,83 +1,82 @@
 ﻿using Bookstore.Domain.Customers;
 using Bookstore.Domain.Orders;
 
-namespace Bookstore.Domain.Offers
+namespace Bookstore.Domain.Offers;
+
+public interface IOfferService
 {
-    public interface IOfferService
+    Task<IPaginatedList<Offer>> GetOffersAsync(OfferFilters filters, int pageIndex, int pageSize);
+
+    Task<IEnumerable<Offer>> GetOffersAsync(string sub);
+
+    Task<Offer> GetOfferAsync(int offerId);
+
+    Task CreateOfferAsync(CreateOfferDto createOfferDto);
+
+    Task UpdateOfferStatusAsync(UpdateOfferStatusDto updateOfferStatusDto);
+
+    Task<OfferStatistics> GetStatisticsAsync();
+}
+
+public class OfferService : IOfferService
+{
+    private readonly IOfferRepository offerRepository;
+    private readonly ICustomerRepository customerRepository;
+
+    public OfferService(IOfferRepository offerRepository, ICustomerRepository customerRepository)
     {
-        Task<IPaginatedList<Offer>> GetOffersAsync(OfferFilters filters, int pageIndex, int pageSize);
-
-        Task<IEnumerable<Offer>> GetOffersAsync(string sub);
-
-        Task<Offer> GetOfferAsync(int offerId);
-
-        Task CreateOfferAsync(CreateOfferDto createOfferDto);
-
-        Task UpdateOfferStatusAsync(UpdateOfferStatusDto updateOfferStatusDto);
-
-        Task<OfferStatistics> GetStatisticsAsync();
+        this.offerRepository = offerRepository;
+        this.customerRepository = customerRepository;
     }
 
-    public class OfferService : IOfferService
+    public async Task<IPaginatedList<Offer>> GetOffersAsync(OfferFilters filters, int pageIndex, int pageSize)
     {
-        private readonly IOfferRepository offerRepository;
-        private readonly ICustomerRepository customerRepository;
+        return await offerRepository.ListAsync(filters, pageIndex, pageSize);
+    }
 
-        public OfferService(IOfferRepository offerRepository, ICustomerRepository customerRepository)
-        {
-            this.offerRepository = offerRepository;
-            this.customerRepository = customerRepository;
-        }
+    public async Task<IEnumerable<Offer>> GetOffersAsync(string sub)
+    {
+        return await offerRepository.ListAsync(sub);
+    }
 
-        public async Task<IPaginatedList<Offer>> GetOffersAsync(OfferFilters filters, int pageIndex, int pageSize)
-        {
-            return await offerRepository.ListAsync(filters, pageIndex, pageSize);
-        }
+    public async Task<Offer> GetOfferAsync(int id)
+    {
+        return await offerRepository.GetAsync(id);
+    }
 
-        public async Task<IEnumerable<Offer>> GetOffersAsync(string sub)
-        {
-            return await offerRepository.ListAsync(sub);
-        }
+    public async Task CreateOfferAsync(CreateOfferDto dto)
+    {
+        Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-        public async Task<Offer> GetOfferAsync(int id)
-        {
-            return await offerRepository.GetAsync(id);
-        }
+        Offer? offer = new(
+            customer.Id,
+            dto.BookName,
+            dto.Author,
+            dto.ISBN,
+            dto.BookTypeId,
+            dto.ConditionId,
+            dto.GenreId,
+            dto.PublisherId,
+            dto.BookPrice);
 
-        public async Task CreateOfferAsync(CreateOfferDto dto)
-        {
-            Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
+        await offerRepository.AddAsync(offer);
 
-            Offer? offer = new(
-                customer.Id,
-                dto.BookName,
-                dto.Author,
-                dto.ISBN,
-                dto.BookTypeId,
-                dto.ConditionId,
-                dto.GenreId,
-                dto.PublisherId,
-                dto.BookPrice);
+        await offerRepository.SaveChangesAsync();
+    }
 
-            await offerRepository.AddAsync(offer);
+    public async Task UpdateOfferStatusAsync(UpdateOfferStatusDto dto)
+    {
+        Offer? offer = await GetOfferAsync(dto.OfferId);
 
-            await offerRepository.SaveChangesAsync();
-        }
+        offer.OfferStatus = dto.Status;
 
-        public async Task UpdateOfferStatusAsync(UpdateOfferStatusDto dto)
-        {
-            Offer? offer = await GetOfferAsync(dto.OfferId);
+        offer.UpdatedOn = DateTime.UtcNow;
 
-            offer.OfferStatus = dto.Status;
+        await offerRepository.SaveChangesAsync();
+    }
 
-            offer.UpdatedOn = DateTime.UtcNow;
-
-            await offerRepository.SaveChangesAsync();
-        }
-
-        public async Task<OfferStatistics> GetStatisticsAsync()
-        {
-            return (await offerRepository.GetStatisticsAsync()) ?? new OfferStatistics();
-        }
+    public async Task<OfferStatistics> GetStatisticsAsync()
+    {
+        return (await offerRepository.GetStatisticsAsync()) ?? new OfferStatistics();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Bookstore.Domain
+﻿namespace Bookstore.Domain;
+
+public interface IImageResizeService
 {
-    public interface IImageResizeService
-    {
-        Task<Stream> ResizeImageAsync(Stream image);
-    }
+    Task<Stream> ResizeImageAsync(Stream image);
 }

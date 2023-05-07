@@ -1,70 +1,69 @@
 ﻿using Bookstore.Domain.Customers;
 
-namespace Bookstore.Domain.Addresses
+namespace Bookstore.Domain.Addresses;
+
+public interface IAddressService
 {
-    public interface IAddressService
+    Task<Address> GetAddressAsync(string sub, int id);
+
+    Task<IEnumerable<Address>> GetAddressesAsync(string sub);
+
+    Task DeleteAddressAsync(DeleteAddressDto deleteAddressDto);
+
+    Task CreateAddressAsync(CreateAddressDto createAddressDto);
+
+    Task UpdateAddressAsync(UpdateAddressDto updateAddressDto);
+}
+
+public class AddressService : IAddressService
+{
+    private readonly IAddressRepository addressRepository;
+    private readonly ICustomerRepository customerRepository;
+
+    public AddressService(IAddressRepository addressRepository, ICustomerRepository customerRepository)
     {
-        Task<Address> GetAddressAsync(string sub, int id);
-
-        Task<IEnumerable<Address>> GetAddressesAsync(string sub);
-
-        Task DeleteAddressAsync(DeleteAddressDto deleteAddressDto);
-
-        Task CreateAddressAsync(CreateAddressDto createAddressDto);
-
-        Task UpdateAddressAsync(UpdateAddressDto updateAddressDto);
+        this.addressRepository = addressRepository;
+        this.customerRepository = customerRepository;
     }
 
-    public class AddressService : IAddressService
+    public async Task<Address> GetAddressAsync(string sub, int id)
     {
-        private readonly IAddressRepository addressRepository;
-        private readonly ICustomerRepository customerRepository;
+        return await addressRepository.GetAsync(sub, id);
+    }
 
-        public AddressService(IAddressRepository addressRepository, ICustomerRepository customerRepository)
-        {
-            this.addressRepository = addressRepository;
-            this.customerRepository = customerRepository;
-        }
+    public async Task<IEnumerable<Address>> GetAddressesAsync(string sub)
+    {
+        return await addressRepository.ListAsync(sub);
+    }
 
-        public async Task<Address> GetAddressAsync(string sub, int id)
-        {
-            return await addressRepository.GetAsync(sub, id);
-        }
+    public async Task CreateAddressAsync(CreateAddressDto dto)
+    {
+        Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
+        Address? address = new(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
 
-        public async Task<IEnumerable<Address>> GetAddressesAsync(string sub)
-        {
-            return await addressRepository.ListAsync(sub);
-        }
+        await addressRepository.AddAsync(address);
 
-        public async Task CreateAddressAsync(CreateAddressDto dto)
-        {
-            Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
-            Address? address = new(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
+        await addressRepository.SaveChangesAsync();
+    }
 
-            await addressRepository.AddAsync(address);
+    public async Task UpdateAddressAsync(UpdateAddressDto dto)
+    {
+        Address? address = await addressRepository.GetAsync(dto.CustomerSub, dto.AddressId);
 
-            await addressRepository.SaveChangesAsync();
-        }
+        address.AddressLine1 = dto.AddressLine1;
+        address.AddressLine2 = dto.AddressLine2;
+        address.City = dto.City;
+        address.State = dto.State;
+        address.Country = dto.Country;
+        address.ZipCode = dto.ZipCode;
 
-        public async Task UpdateAddressAsync(UpdateAddressDto dto)
-        {
-            Address? address = await addressRepository.GetAsync(dto.CustomerSub, dto.AddressId);
+        await addressRepository.SaveChangesAsync();
+    }
 
-            address.AddressLine1 = dto.AddressLine1;
-            address.AddressLine2 = dto.AddressLine2;
-            address.City = dto.City;
-            address.State = dto.State;
-            address.Country = dto.Country;
-            address.ZipCode = dto.ZipCode;
+    public async Task DeleteAddressAsync(DeleteAddressDto dto)
+    {
+        await addressRepository.DeleteAsync(dto.CustomerSub, dto.AddressId);
 
-            await addressRepository.SaveChangesAsync();
-        }
-
-        public async Task DeleteAddressAsync(DeleteAddressDto dto)
-        {
-            await addressRepository.DeleteAsync(dto.CustomerSub, dto.AddressId);
-
-            await addressRepository.SaveChangesAsync();
-        }
+        await addressRepository.SaveChangesAsync();
     }
 }

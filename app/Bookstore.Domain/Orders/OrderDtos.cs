@@ -1,8 +1,7 @@
-﻿namespace Bookstore.Domain.Orders
-{
-    public record CreateOrderDto(string CustomerSub, string CorrelationId, int AddressId);
+﻿namespace Bookstore.Domain.Orders;
 
-    public record UpdateOrderStatusDto(int OrderId, OrderStatus OrderStatus);
+public record CreateOrderDto(string CustomerSub, string CorrelationId, int AddressId);
 
-    public record CancelOrderDto(string CustomerSub, int OrderId);
-}
+public record UpdateOrderStatusDto(int OrderId, OrderStatus OrderStatus);
+
+public record CancelOrderDto(string CustomerSub, int OrderId);

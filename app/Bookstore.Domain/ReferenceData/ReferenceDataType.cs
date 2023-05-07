@@ -1,10 +1,9 @@
-﻿namespace Bookstore.Domain.ReferenceData
+﻿namespace Bookstore.Domain.ReferenceData;
+
+public enum ReferenceDataType
 {
-    public enum ReferenceDataType
-    {
-        Publisher = 0,
-        Condition = 1,
-        BookType = 2,
-        Genre = 3
-    }
+    Publisher = 0,
+    Condition = 1,
+    BookType = 2,
+    Genre = 3
 }

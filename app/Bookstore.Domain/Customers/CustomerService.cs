@@ -1,51 +1,50 @@
-﻿namespace Bookstore.Domain.Customers
+﻿namespace Bookstore.Domain.Customers;
+
+public interface ICustomerService
 {
-    public interface ICustomerService
+    Task<Customer> GetAsync(int id);
+
+    Task<Customer> GetAsync(string sub);
+
+    Task CreateOrUpdateCustomerAsync(CreateOrUpdateCustomerDto createOrUpdateCustomerDto);
+}
+
+public class CustomerService : ICustomerService
+{
+    private readonly ICustomerRepository customerRepository;
+
+    public CustomerService(ICustomerRepository customerRepository)
     {
-        Task<Customer> GetAsync(int id);
-
-        Task<Customer> GetAsync(string sub);
-
-        Task CreateOrUpdateCustomerAsync(CreateOrUpdateCustomerDto createOrUpdateCustomerDto);
+        this.customerRepository = customerRepository;
     }
 
-    public class CustomerService : ICustomerService
+    public async Task<Customer> GetAsync(int id)
     {
-        private readonly ICustomerRepository customerRepository;
+        return await customerRepository.GetAsync(id);
+    }
 
-        public CustomerService(ICustomerRepository customerRepository)
-        {
-            this.customerRepository = customerRepository;
-        }
-
-        public async Task<Customer> GetAsync(int id)
-        {
-            return await customerRepository.GetAsync(id);
-        }
-
-        public async Task<Customer> GetAsync(string sub)
-        {
-            return await customerRepository.GetAsync(sub);
-        }
+    public async Task<Customer> GetAsync(string sub)
+    {
+        return await customerRepository.GetAsync(sub);
+    }
        
-        public async Task CreateOrUpdateCustomerAsync(CreateOrUpdateCustomerDto dto)
+    public async Task CreateOrUpdateCustomerAsync(CreateOrUpdateCustomerDto dto)
+    {
+        Customer? existingCustomer = await customerRepository.GetAsync(dto.CustomerSub);
+
+        if (existingCustomer == null)
         {
-            Customer? existingCustomer = await customerRepository.GetAsync(dto.CustomerSub);
+            existingCustomer = new Customer();
 
-            if (existingCustomer == null)
-            {
-                existingCustomer = new Customer();
-
-                await customerRepository.AddAsync(existingCustomer);
-            }
-
-            existingCustomer.Sub = dto.CustomerSub;
-            existingCustomer.Username = dto.Username;
-            existingCustomer.FirstName = dto.FirstName;
-            existingCustomer.LastName = dto.LastName;
-            existingCustomer.UpdatedOn = DateTime.UtcNow;
-
-            await customerRepository.SaveChangesAsync();
+            await customerRepository.AddAsync(existingCustomer);
         }
+
+        existingCustomer.Sub = dto.CustomerSub;
+        existingCustomer.Username = dto.Username;
+        existingCustomer.FirstName = dto.FirstName;
+        existingCustomer.LastName = dto.LastName;
+        existingCustomer.UpdatedOn = DateTime.UtcNow;
+
+        await customerRepository.SaveChangesAsync();
     }
 }
