@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Bookstore.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Bookstore.Web.Helpers;
@@ -22,21 +23,21 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> Index(string searchString, string sortBy = "Name", int pageIndex = 1, int pageSize = 10)
         {
-            var books = await inventoryService.GetBooksAsync(searchString, sortBy, pageIndex, pageSize);
+            IPaginatedList<Book> books = await inventoryService.GetBooksAsync(searchString, sortBy, pageIndex, pageSize);
 
             return View(new SearchIndexViewModel(books));
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var book = await inventoryService.GetBookAsync(id);
+            Book book = await inventoryService.GetBookAsync(id);
 
             return View(new SearchDetailsViewModel(book));
         }
 
         public async Task<IActionResult> AddItemToShoppingCart(int bookId)
         {
-            var dto = new AddToShoppingCartDto(HttpContext.GetShoppingCartCorrelationId(), bookId, 1);
+            AddToShoppingCartDto dto = new AddToShoppingCartDto(HttpContext.GetShoppingCartCorrelationId(), bookId, 1);
 
             await shoppingCartService.AddToShoppingCartAsync(dto);
 
@@ -47,7 +48,7 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> AddItemToWishlist(int bookId)
         {
-            var dto = new AddToWishlistDto(HttpContext.GetShoppingCartCorrelationId(), bookId);
+            AddToWishlistDto dto = new AddToWishlistDto(HttpContext.GetShoppingCartCorrelationId(), bookId);
 
             await shoppingCartService.AddToWishlistAsync(dto);
 

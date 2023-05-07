@@ -21,7 +21,7 @@ namespace Bookstore.Web.Helpers
 
             if (value is not IFormFile file) return base.IsValid(value);
 
-            var extension = Path.GetExtension(file.FileName);
+            string extension = Path.GetExtension(file.FileName);
 
             return imageTypes.Contains(extension, StringComparer.OrdinalIgnoreCase);
         }

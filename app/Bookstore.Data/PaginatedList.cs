@@ -27,8 +27,8 @@ namespace Bookstore.Domain
 
         public async Task PopulateAsync()
         {
-            var count = await source.CountAsync();
-            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            int count = await source.CountAsync();
+            List<T> items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
             PageIndex = pageIndex;
 
@@ -46,10 +46,10 @@ namespace Bookstore.Domain
         {
             //https://jithilmt.medium.com/logic-of-building-a-pagination-ui-component-a-thought-process-f057ee2d487e
 
-            var pagesCount = 1;
-            var newPagesCount = 1;
-            var start = PageIndex;
-            var end = PageIndex;
+            int pagesCount = 1;
+            int newPagesCount = 1;
+            int start = PageIndex;
+            int end = PageIndex;
 
             while (pagesCount < count)
             {
@@ -80,13 +80,13 @@ namespace Bookstore.Domain
 
         public IPaginatedList<TConvertTo> ConvertTo<TConvertTo>(Func<T, TConvertTo> convert)
         {
-            var result = new PaginatedList<TConvertTo>
+            PaginatedList<TConvertTo> result = new PaginatedList<TConvertTo>
             {
                 PageIndex = PageIndex,
                 TotalPages = TotalPages,
             };
 
-            foreach (var item in this)
+            foreach (T item in this)
             {
                 result.Add(convert(item));
             }

@@ -12,15 +12,15 @@ namespace Bookstore.Data.ImageResizeService
 
         public async Task<Stream> ResizeImageAsync(Stream image)
         {
-            using var magickImage = new MagickImage(image);
+            using MagickImage magickImage = new MagickImage(image);
 
             if (magickImage.BaseWidth == BookCoverImageWidth && magickImage.BaseHeight == BookCoverImageHeight) return image;
 
-            var size = new MagickGeometry(BookCoverImageWidth, BookCoverImageHeight) { IgnoreAspectRatio = false };
+            MagickGeometry size = new MagickGeometry(BookCoverImageWidth, BookCoverImageHeight) { IgnoreAspectRatio = false };
 
             magickImage.Resize(size);
 
-            var result = new MemoryStream();
+            MemoryStream result = new MemoryStream();
 
             await magickImage.WriteAsync(result);
 

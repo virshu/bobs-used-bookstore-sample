@@ -41,7 +41,7 @@
 
         private async Task AddToShoppingCartAsync(string correlationId, int bookId, int quantity, bool wantToBuy)
         {
-            var shoppingCart = await shoppingCartRepository.GetAsync(correlationId);
+            ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(correlationId);
 
             if (shoppingCart == null)
             {
@@ -64,7 +64,7 @@
 
         public async Task MoveWishlistItemToShoppingCartAsync(MoveWishlistItemToShoppingCartDto dto)
         {
-            var shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+            ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
             shoppingCart.MoveWishListItemToShoppingCart(dto.ShoppingCartItemId);
 
@@ -73,11 +73,11 @@
 
         public async Task MoveAllWishlistItemsToShoppingCartAsync(MoveAllWishlistItemsToShoppingCartDto dto)
         {
-            var shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+            ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
                 if (shoppingCart == null) return;
 
-            foreach (var wishListItem in shoppingCart.GetWishListItems())
+            foreach (ShoppingCartItem? wishListItem in shoppingCart.GetWishListItems())
             {
                 shoppingCart.MoveWishListItemToShoppingCart(wishListItem.Id);
             }
@@ -87,7 +87,7 @@
 
         public async Task DeleteShoppingCartItemAsync(DeleteShoppingCartItemDto dto)
         {
-            var shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+            ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
             shoppingCart.RemoveShoppingCartItemById(dto.ShoppingCartItemId);
 

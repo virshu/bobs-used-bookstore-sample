@@ -12,7 +12,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Offers
     {
         public OfferIndexViewModel(IPaginatedList<Offer> offers, IEnumerable<ReferenceDataItem> referenceData)
         {
-            foreach (var offer in offers)
+            foreach (Offer offer in offers)
             {
                 Items.Add(new OfferIndexItemViewModel
                 {

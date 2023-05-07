@@ -10,7 +10,7 @@ namespace Bookstore.Web.ViewModel.Resale
 
         public ResaleIndexViewModel(IEnumerable<Offer> offers)
         {
-            foreach (var offer in offers)
+            foreach (Offer offer in offers)
             {
                 Items.Add(new ResaleIndexItemViewModel
                 {

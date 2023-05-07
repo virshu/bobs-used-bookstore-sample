@@ -10,7 +10,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [Route("/Error/Index/{code:int}")]
         public IActionResult Index(int code)
         {
-            var exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            IExceptionHandlerPathFeature exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             ViewData["Path"] = exception?.Path;
             ViewData["StatusCode"] = code;
             return View();
@@ -19,9 +19,9 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [Route("/error")]
         public IActionResult Support()
         {
-            var exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            IExceptionHandlerPathFeature exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             ViewData["Path"] = exception?.Path;
-            var error = Problem();
+            ObjectResult error = Problem();
 
             ViewData["StatusCode"] = error.StatusCode;
             return View("~/Views/Error/Index.cshtml");

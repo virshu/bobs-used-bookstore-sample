@@ -45,7 +45,7 @@ namespace Bookstore.Web.Startup
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             // Create the database
-            using (var scope = app.Services.CreateAsyncScope())
+            using (AsyncServiceScope scope = app.Services.CreateAsyncScope())
             {
                 await scope.ServiceProvider.GetService<ApplicationDbContext>()!.Database.EnsureCreatedAsync();
             }

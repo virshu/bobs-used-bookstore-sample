@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bookstore.Web.Helpers;
 using Bookstore.Domain.Orders;
@@ -17,14 +18,14 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var orders = await orderService.GetOrdersAsync(User.GetSub());
+            IEnumerable<Order> orders = await orderService.GetOrdersAsync(User.GetSub());
 
             return View(new OrderIndexViewModel(orders));
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var order = await orderService.GetOrderAsync(id);
+            Order order = await orderService.GetOrderAsync(id);
 
             return View(new OrderDetailsViewModel(order));
         }
@@ -32,7 +33,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var dto = new CancelOrderDto(User.GetSub(), id);
+            CancelOrderDto dto = new CancelOrderDto(User.GetSub(), id);
 
             await orderService.CancelOrderAsync(dto);
 

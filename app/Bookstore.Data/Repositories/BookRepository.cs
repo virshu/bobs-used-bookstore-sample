@@ -30,7 +30,7 @@ namespace Bookstore.Data.Repositories
 
         async Task<IPaginatedList<Book>> IBookRepository.ListAsync(BookFilters filters, int pageIndex, int pageSize)
         {
-            var query = dbContext.Book.AsQueryable();
+            IQueryable<Book> query = dbContext.Book.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filters.Name))
             {
@@ -73,7 +73,7 @@ namespace Bookstore.Data.Repositories
                 .Include(x => x.BookType)
                 .Include(x => x.Condition);
 
-            var result = new PaginatedList<Book>(query, pageIndex, pageSize);
+            PaginatedList<Book> result = new PaginatedList<Book>(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 
@@ -82,7 +82,7 @@ namespace Bookstore.Data.Repositories
 
         async Task<IPaginatedList<Book>> IBookRepository.ListAsync(string searchString, string sortBy, int pageIndex, int pageSize)
         {
-            var query = dbContext.Book.AsQueryable();
+            IQueryable<Book> query = dbContext.Book.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchString))
             {
@@ -101,7 +101,7 @@ namespace Bookstore.Data.Repositories
                 _ => query.OrderBy(x => x.Name),
             };
 
-            var result = new PaginatedList<Book>(query, pageIndex, pageSize);
+            PaginatedList<Book> result = new PaginatedList<Book>(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 
@@ -115,7 +115,7 @@ namespace Bookstore.Data.Repositories
 
         async Task IBookRepository.UpdateAsync(Book book)
         {
-            var existing = await dbContext.Book.FindAsync(book.Id);
+            Book existing = await dbContext.Book.FindAsync(book.Id);
 
             dbContext.Entry(existing).CurrentValues.SetValues(book);
 

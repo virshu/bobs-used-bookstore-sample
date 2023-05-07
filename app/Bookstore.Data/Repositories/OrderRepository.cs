@@ -52,7 +52,7 @@ namespace Bookstore.Data.Repositories
 
         async Task<OrderStatistics> IOrderRepository.GetStatisticsAsync()
         {
-            var startOfMonth = DateTime.UtcNow.StartOfMonth();
+            DateTime startOfMonth = DateTime.UtcNow.StartOfMonth();
 
             return await dbContext.Order
                 .GroupBy(x => 1)
@@ -67,7 +67,7 @@ namespace Bookstore.Data.Repositories
 
         async Task<IPaginatedList<Order>> IOrderRepository.ListAsync(OrderFilters filters, int pageIndex, int pageSize)
         {
-            var query = dbContext.Order.AsQueryable();
+            IQueryable<Order> query = dbContext.Order.AsQueryable();
 
             if (filters.OrderStatusFilter.HasValue)
             {
@@ -89,7 +89,7 @@ namespace Bookstore.Data.Repositories
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Book);
 
-            var result = new PaginatedList<Order>(query, pageIndex, pageSize);
+            PaginatedList<Order> result = new PaginatedList<Order>(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

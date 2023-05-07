@@ -46,9 +46,9 @@ namespace Bookstore.Domain.Offers
 
         public async Task CreateOfferAsync(CreateOfferDto dto)
         {
-            var customer = await customerRepository.GetAsync(dto.CustomerSub);
+            Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-            var offer = new Offer(
+            Offer? offer = new Offer(
                 customer.Id,
                 dto.BookName,
                 dto.Author,
@@ -66,7 +66,7 @@ namespace Bookstore.Domain.Offers
 
         public async Task UpdateOfferStatusAsync(UpdateOfferStatusDto dto)
         {
-            var offer = await GetOfferAsync(dto.OfferId);
+            Offer? offer = await GetOfferAsync(dto.OfferId);
 
             offer.OfferStatus = dto.Status;
 

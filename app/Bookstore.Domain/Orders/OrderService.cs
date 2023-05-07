@@ -58,11 +58,11 @@ namespace Bookstore.Domain.Orders
 
         public async Task<int> CreateOrderAsync(CreateOrderDto dto)
         {
-            var shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+            ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
-            var customer = await customerRepository.GetAsync(dto.CustomerSub);
+            Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-            var order = new Order(customer.Id, dto.AddressId);
+            Order? order = new Order(customer.Id, dto.AddressId);
 
             await orderRepository.AddAsync(order);
 
@@ -84,7 +84,7 @@ namespace Bookstore.Domain.Orders
 
         public async Task UpdateOrderStatusAsync(UpdateOrderStatusDto dto)
         {
-            var order = await orderRepository.GetAsync(dto.OrderId);
+            Order? order = await orderRepository.GetAsync(dto.OrderId);
 
             order.OrderStatus = dto.OrderStatus;
 
@@ -95,7 +95,7 @@ namespace Bookstore.Domain.Orders
 
         public async Task CancelOrderAsync(CancelOrderDto dto)
         {
-            var order = await orderRepository.GetAsync(dto.OrderId, dto.CustomerSub);
+            Order? order = await orderRepository.GetAsync(dto.OrderId, dto.CustomerSub);
 
             if (order == null) return;
 

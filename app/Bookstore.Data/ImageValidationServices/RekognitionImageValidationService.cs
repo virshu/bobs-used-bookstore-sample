@@ -37,11 +37,11 @@ namespace Bookstore.Data.ImageValidationServices
 
             image.Position = 0;
 
-            var memoryStream = new MemoryStream();
+            MemoryStream memoryStream = new MemoryStream();
 
             image.CopyTo(memoryStream);
 
-            var result = await rekognitionClient.DetectModerationLabelsAsync(new DetectModerationLabelsRequest()
+            DetectModerationLabelsResponse result = await rekognitionClient.DetectModerationLabelsAsync(new DetectModerationLabelsRequest()
             {
                 Image = new Image { Bytes = memoryStream }
             });

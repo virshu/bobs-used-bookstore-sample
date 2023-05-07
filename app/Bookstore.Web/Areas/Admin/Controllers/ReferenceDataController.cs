@@ -2,6 +2,7 @@
 using Bookstore.Web.Areas.Admin.Models.ReferenceData;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Bookstore.Domain;
 
 namespace Bookstore.Web.Areas.Admin.Controllers
 {
@@ -16,14 +17,14 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(ReferenceDataFilters filters, int pageIndex = 1, int pageSize = 10)
         {
-            var referenceDataItems = await referenceDataService.GetReferenceDataAsync(filters, pageIndex, pageSize);
+            IPaginatedList<ReferenceDataItem> referenceDataItems = await referenceDataService.GetReferenceDataAsync(filters, pageIndex, pageSize);
 
             return View(new ReferenceDataIndexViewModel(referenceDataItems, filters));
         }
 
         public IActionResult Create(ReferenceDataType? selectedReferenceDataType = null)
         {
-            var model = new ReferenceDataItemCreateUpdateViewModel();
+            ReferenceDataItemCreateUpdateViewModel model = new ReferenceDataItemCreateUpdateViewModel();
 
             if (selectedReferenceDataType.HasValue) model.SelectedReferenceDataType = selectedReferenceDataType.Value;
 
@@ -33,7 +34,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ReferenceDataItemCreateUpdateViewModel model)
         {
-            var dto = new CreateReferenceDataItemDto(model.SelectedReferenceDataType, model.Text);
+            CreateReferenceDataItemDto dto = new CreateReferenceDataItemDto(model.SelectedReferenceDataType, model.Text);
 
             await referenceDataService.CreateAsync(dto);
 
@@ -42,7 +43,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var referenceDataItem = await referenceDataService.GetReferenceDataItemAsync(id);
+            ReferenceDataItem referenceDataItem = await referenceDataService.GetReferenceDataItemAsync(id);
 
             return View("CreateUpdate", new ReferenceDataItemCreateUpdateViewModel(referenceDataItem));
         }
@@ -50,7 +51,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(ReferenceDataItemCreateUpdateViewModel model)
         {
-            var dto = new UpdateReferenceDataItemDto(model.Id, model.SelectedReferenceDataType, model.Text);
+            UpdateReferenceDataItemDto dto = new UpdateReferenceDataItemDto(model.Id, model.SelectedReferenceDataType, model.Text);
 
             await referenceDataService.UpdateAsync(dto);
 

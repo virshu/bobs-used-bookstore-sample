@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bookstore.Web.ViewModel.Resale;
 using Bookstore.Web.Helpers;
@@ -20,14 +21,14 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var offers = await offerService.GetOffersAsync(User.GetSub());
+            IEnumerable<Offer> offers = await offerService.GetOffersAsync(User.GetSub());
 
             return View(new ResaleIndexViewModel(offers));
         }
 
         public async Task<IActionResult> Create()
         {
-            var referenceDataDtos = await referenceDataService.GetAllReferenceDataAsync();
+            IEnumerable<ReferenceDataItem> referenceDataDtos = await referenceDataService.GetAllReferenceDataAsync();
 
             return View(new ResaleCreateViewModel(referenceDataDtos));
         }
@@ -37,7 +38,7 @@ namespace Bookstore.Web.Controllers
         {
             if (!ModelState.IsValid) return View();
 
-            var dto = new CreateOfferDto(
+            CreateOfferDto dto = new CreateOfferDto(
                 User.GetSub(), 
                 resaleViewModel.BookName, 
                 resaleViewModel.Author, 

@@ -63,7 +63,7 @@ namespace Bookstore.Domain.Books
 
         public async Task<BookResult> AddAsync(CreateBookDto dto)
         {
-            var book = new Book(
+            Book? book = new Book(
                 dto.Name,
                 dto.Author,
                 dto.ISBN,
@@ -83,7 +83,7 @@ namespace Bookstore.Domain.Books
 
         public async Task<BookResult> UpdateAsync(UpdateBookDto dto)
         {
-            var book = await bookRepository.GetAsync(dto.BookId);
+            Book? book = await bookRepository.GetAsync(dto.BookId);
 
             book.Name = dto.Name;
             book.Author = dto.Author;
@@ -105,9 +105,9 @@ namespace Bookstore.Domain.Books
 
         private async Task<BookResult> SaveAsync(Book book, Stream? coverImage, string coverImageFileName)
         {
-            var resizedCoverImage = await ResizeImageAsync(coverImage);
+            Stream? resizedCoverImage = await ResizeImageAsync(coverImage);
 
-            var imageIsSafe = await imageValidationService.IsSafeAsync(coverImage);
+            bool imageIsSafe = await imageValidationService.IsSafeAsync(coverImage);
 
             if (!imageIsSafe) return new BookResult(false, "The image failed the safety check. Please try another image.");
 
@@ -127,7 +127,7 @@ namespace Bookstore.Domain.Books
 
         private async Task SaveImageAsync(Book book, Stream? coverImage, string? coverImageFilename)
         {
-            var imageUrl = await fileService.SaveAsync(coverImage, coverImageFilename);
+            string? imageUrl = await fileService.SaveAsync(coverImage, coverImageFilename);
 
             if (coverImage != null)
             {

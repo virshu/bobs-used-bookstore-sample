@@ -13,7 +13,7 @@ namespace Bookstore.Web.Areas.Admin.Models.ReferenceData
 
         public ReferenceDataIndexViewModel(IPaginatedList<ReferenceDataItem> referenceDataItems, ReferenceDataFilters filters)
         {
-            foreach (var item in referenceDataItems.OrderBy(x => x.DataType.ToString()))
+            foreach (ReferenceDataItem item in referenceDataItems.OrderBy(x => x.DataType.ToString()))
             {
                 Items.Add(new ReferenceDataIndexListItemViewModel
                 {

@@ -1,4 +1,5 @@
-﻿using Bookstore.Domain.Addresses;
+﻿using System.Collections.Generic;
+using Bookstore.Domain.Addresses;
 using Bookstore.Domain.Carts;
 using Bookstore.Domain.Orders;
 using Bookstore.Web.Helpers;
@@ -25,8 +26,8 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var shoppingCart = await shoppingCartService.GetShoppingCartAsync(HttpContext.GetShoppingCartCorrelationId());
-            var addresses = await addressService.GetAddressesAsync(User.GetSub());
+            ShoppingCart shoppingCart = await shoppingCartService.GetShoppingCartAsync(HttpContext.GetShoppingCartCorrelationId());
+            IEnumerable<Address> addresses = await addressService.GetAddressesAsync(User.GetSub());
 
             return View(new CheckoutIndexViewModel(shoppingCart, addresses));
         }
@@ -34,16 +35,16 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CheckoutIndexViewModel model)
         {
-            var dto = new CreateOrderDto(User.GetSub(), HttpContext.GetShoppingCartCorrelationId(), model.SelectedAddressId);
+            CreateOrderDto dto = new CreateOrderDto(User.GetSub(), HttpContext.GetShoppingCartCorrelationId(), model.SelectedAddressId);
 
-            var orderId = await orderService.CreateOrderAsync(dto);
+            int orderId = await orderService.CreateOrderAsync(dto);
 
             return RedirectToAction("Finished", new { orderId });
         }
 
         public async Task<IActionResult> Finished(int orderId)
         {
-            var order = await orderService.GetOrderAsync(orderId);
+            Order order = await orderService.GetOrderAsync(orderId);
 
             return View(new CheckoutFinishedViewModel(order));
         }

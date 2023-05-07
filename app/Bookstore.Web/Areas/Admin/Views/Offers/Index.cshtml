@@ -1,5 +1,6 @@
 ﻿@using Bookstore.Domain.Offers;
 @using Bookstore.Domain;
+@using Bookstore.Web.Areas.Admin.Models.Offers
 
 @model Bookstore.Web.Areas.Admin.Models.Offers.OfferIndexViewModel
 
@@ -78,7 +79,7 @@
                     <th scope="col"></th>
                 </tr>
             </thead>
-            @foreach (var offer in Model.Items)
+            @foreach (OfferIndexItemViewModel offer in Model.Items)
             {
                 <tr>
                     <td>@offer.CustomerName</td>

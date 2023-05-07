@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.Search.SearchIndexViewModel
+﻿@using Bookstore.Web.ViewModel.Search
+@model Bookstore.Web.ViewModel.Search.SearchIndexViewModel
 @{
     ViewData["Title"] = "Search for books";
 }
@@ -42,7 +43,7 @@
 
                 <div class="recent-book-sec">
                     <div class="row">
-                        @foreach (var item in Model.Books)
+                        @foreach (SearchIndexItemViewModel item in Model.Books)
                         {
                             <div class="col-md-3">
                                 <div class="item text-center">

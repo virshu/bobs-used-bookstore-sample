@@ -7,15 +7,15 @@ namespace Bookstore.Web.Helpers
     {
         public static string GetShoppingCartCorrelationId(this HttpContext context)
         {
-            var CookieKey = "ShoppingCartId";
+            string CookieKey = "ShoppingCartId";
 
-            var cookieOptions = new CookieOptions
+            CookieOptions cookieOptions = new CookieOptions
             {
                 Expires = DateTime.Now.AddYears(1),
                 Path = "/"
             };
 
-            var shoppingCartClientId = context.Request.Cookies[CookieKey];
+            string shoppingCartClientId = context.Request.Cookies[CookieKey];
 
             if (string.IsNullOrWhiteSpace(shoppingCartClientId))
             {

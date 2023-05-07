@@ -5,7 +5,7 @@
         public static string ToStorageSize(this int value)
         {
             string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-            var order = 0;
+            int order = 0;
 
             while (value >= 1024 && order < sizes.Length - 1)
             {

@@ -54,7 +54,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Orders
             OrderDate = order.CreatedOn;
             DeliveryDate = order.DeliveryDate;
 
-            foreach (var orderItem in order.OrderItems)
+            foreach (OrderItem orderItem in order.OrderItems)
             {
                 Items.Add(new OrderDetailsItemViewModel
                 {

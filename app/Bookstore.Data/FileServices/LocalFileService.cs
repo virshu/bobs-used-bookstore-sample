@@ -26,12 +26,12 @@ namespace Bookstore.Data.FileServices
         {
             if (file == null) return null;
 
-            var imageFolder = Path.Combine(webRootPath, "images/coverimages");
-            var uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
+            string imageFolder = Path.Combine(webRootPath, "images/coverimages");
+            string uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
 
             if (!Directory.Exists(imageFolder)) Directory.CreateDirectory(imageFolder);
 
-            using var filestream = new FileStream(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
+            using FileStream filestream = new FileStream(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
 
             await file.CopyToAsync(filestream);
 

@@ -34,14 +34,14 @@ namespace Bookstore.Data.Repositories
 
         async Task<IPaginatedList<ReferenceDataItem>> IReferenceDataRepository.ListAsync(ReferenceDataFilters filters, int pageIndex, int pageSize)
         {
-            var query = dbContext.ReferenceData.AsQueryable();
+            IQueryable<ReferenceDataItem> query = dbContext.ReferenceData.AsQueryable();
 
             if (filters.ReferenceDataType.HasValue)
             {
                 query = query.Where(x => x.DataType == filters.ReferenceDataType.Value);
             }
 
-            var result = new PaginatedList<ReferenceDataItem>(query, pageIndex, pageSize);
+            PaginatedList<ReferenceDataItem> result = new PaginatedList<ReferenceDataItem>(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

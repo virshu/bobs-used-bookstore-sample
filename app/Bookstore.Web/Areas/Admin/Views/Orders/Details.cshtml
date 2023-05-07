@@ -1,4 +1,5 @@
 ﻿@using Bookstore.Domain.Orders
+@using Bookstore.Web.Areas.Admin.Models.Orders
 
 @model Bookstore.Web.Areas.Admin.Models.Orders.OrderDetailsViewModel
 
@@ -82,7 +83,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var book in Model.Items)
+                        @foreach (OrderDetailsItemViewModel book in Model.Items)
                         {
                             <tr>
                                 <td>@book.Name</td>

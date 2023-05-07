@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.ShoppingCart.ShoppingCartIndexViewModel
+﻿@using Bookstore.Web.ViewModel.ShoppingCart
+@model Bookstore.Web.ViewModel.ShoppingCart.ShoppingCartIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -45,7 +46,7 @@
 
             <table class="table">
                 <tbody>
-                    @foreach (var item in Model.ShoppingCartItems)
+                    @foreach (ShoppingCartIndexItemViewModel item in Model.ShoppingCartItems)
                     {
                         <tr>
                             <td>

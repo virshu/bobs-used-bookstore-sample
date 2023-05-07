@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.Address.AddressIndexViewModel
+﻿@using Bookstore.Web.ViewModel.Address
+@model Bookstore.Web.ViewModel.Address.AddressIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -43,7 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.Items)
+                                @foreach (AddressIndexItemViewModel item in Model.Items)
                                 {
                                     <tr>
                                         <td>

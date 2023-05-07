@@ -30,7 +30,7 @@
        
         public async Task CreateOrUpdateCustomerAsync(CreateOrUpdateCustomerDto dto)
         {
-            var existingCustomer = await customerRepository.GetAsync(dto.CustomerSub);
+            Customer? existingCustomer = await customerRepository.GetAsync(dto.CustomerSub);
 
             if (existingCustomer == null)
             {

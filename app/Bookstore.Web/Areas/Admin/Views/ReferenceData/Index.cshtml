@@ -1,4 +1,5 @@
 ﻿@using Bookstore.Domain.ReferenceData
+@using Bookstore.Web.Areas.Admin.Models.ReferenceData
 
 @model Bookstore.Web.Areas.Admin.Models.ReferenceData.ReferenceDataIndexViewModel
 
@@ -62,7 +63,7 @@
                 }
                 else
                 {
-                    foreach (var item in Model.Items)
+                    foreach (ReferenceDataIndexListItemViewModel item in Model.Items)
                     {
                         <tr>
                             <td>@item.ReferenceDataType</td>

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Bookstore.Web.Startup;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureConfiguration();
 
@@ -12,7 +12,7 @@ builder.ConfigureAuthentication();
 
 builder.ConfigureDependencyInjection();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 await app.ConfigureMiddlewareAsync();
 

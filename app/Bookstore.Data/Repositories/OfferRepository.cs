@@ -20,7 +20,7 @@ namespace Bookstore.Data.Repositories
 
         public async Task<OfferStatistics> GetStatisticsAsync()
         {
-            var startOfMonth = DateTime.UtcNow.StartOfMonth();
+            DateTime startOfMonth = DateTime.UtcNow.StartOfMonth();
 
             return await dbContext.Offer
                 .GroupBy(x => 1)
@@ -44,7 +44,7 @@ namespace Bookstore.Data.Repositories
 
         async Task<IPaginatedList<Offer>> IOfferRepository.ListAsync(OfferFilters filters, int pageIndex, int pageSize)
         {
-            var query = dbContext.Offer.AsQueryable();
+            IQueryable<Offer> query = dbContext.Offer.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filters.Author))
             {
@@ -73,7 +73,7 @@ namespace Bookstore.Data.Repositories
 
             query = query.Include(x => x.Customer);
 
-            var result = new PaginatedList<Offer>(query, pageIndex, pageSize);
+            PaginatedList<Offer> result = new PaginatedList<Offer>(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

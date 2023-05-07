@@ -171,13 +171,13 @@ public class EC2ComputeStack : Stack
 
     internal void CreateEc2Instance(EC2ComputeStackProps props)
     {
-        var ami = MachineImage.Lookup(new LookupMachineImageProps
+        IMachineImage ami = MachineImage.Lookup(new LookupMachineImageProps
         {
             Name = "amzn2-x86_64-MATEDE_DOTNET-*",
             Owners = new[] { "amazon" }
         });
 
-        var webAppSecurityGroup = new SecurityGroup(this, $"{Constants.AppName}AppSecurityGroup", new SecurityGroupProps
+        SecurityGroup webAppSecurityGroup = new SecurityGroup(this, $"{Constants.AppName}AppSecurityGroup", new SecurityGroupProps
         {
             Vpc = props.Vpc,
             Description = "Allow HTTP(S) access to Bobs Bookstore website",
@@ -201,31 +201,31 @@ public class EC2ComputeStack : Stack
 
     internal void ConfigureUserData()
     {
-        var serverConfigScriptFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
+        string serverConfigScriptFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
         {
             Bucket = ServerConfigScriptAsset.Bucket,
             BucketKey = ServerConfigScriptAsset.S3ObjectKey
         });
 
-        var webAppFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
+        string webAppFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
         {
             Bucket = WebAppAsset.Bucket,
             BucketKey = WebAppAsset.S3ObjectKey
         });
 
-        var sslConfigFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
+        string sslConfigFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
         {
             Bucket = SslConfigAsset.Bucket,
             BucketKey = SslConfigAsset.S3ObjectKey
         });
 
-        var webAppConfigVirtualHostFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
+        string webAppConfigVirtualHostFilePath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
         {
             Bucket = WebAppVirtualHostConfigAsset.Bucket,
             BucketKey = WebAppVirtualHostConfigAsset.S3ObjectKey
         });
 
-        var kestrelServiceFilPath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
+        string kestrelServiceFilPath = Instance.UserData.AddS3DownloadCommand(new S3DownloadOptions
         {
             Bucket = KestrelServiceAsset.Bucket,
             BucketKey = KestrelServiceAsset.S3ObjectKey
@@ -240,7 +240,7 @@ public class EC2ComputeStack : Stack
 
     internal void CreateCognitoUserPoolClient(EC2ComputeStackProps props)
     {
-        var Ec2UserPoolClient = new UserPoolClient(this, "EC2Client", new UserPoolClientProps
+        UserPoolClient Ec2UserPoolClient = new UserPoolClient(this, "EC2Client", new UserPoolClientProps
         {
             UserPool = props.WebAppUserPool,
             GenerateSecret = false,

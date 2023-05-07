@@ -21,7 +21,7 @@ namespace Bookstore.Web.Helpers
 
         protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
             identity.AddClaim(new Claim(ClaimTypes.Name, "bookstoreuser"));
             identity.AddClaim(new Claim("sub", UserId));
@@ -33,16 +33,16 @@ namespace Bookstore.Web.Helpers
 
             await SaveCustomerDetailsAsync(Context, identity);
 
-            var redirectUrl = properties.RedirectUri ?? $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}";
+            string redirectUrl = properties.RedirectUri ?? $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}";
 
             Context.Response.Redirect(redirectUrl);
         }
 
         private async Task SaveCustomerDetailsAsync(HttpContext context, ClaimsIdentity identity)
         {
-            var customerService = context.RequestServices.GetService<ICustomerService>();
+            ICustomerService customerService = context.RequestServices.GetService<ICustomerService>();
 
-            var dto = new CreateOrUpdateCustomerDto(
+            CreateOrUpdateCustomerDto dto = new CreateOrUpdateCustomerDto(
                 identity.FindFirst("Sub").Value,
                 identity.Name,
                 identity.FindFirst("given_name").Value,

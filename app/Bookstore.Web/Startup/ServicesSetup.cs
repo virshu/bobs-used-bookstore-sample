@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System;
+using Amazon.Extensions.NETCore.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -30,7 +31,7 @@ namespace Bookstore.Web.Startup
             builder.Services.AddAWSService<IAmazonS3>();
             builder.Services.AddAWSService<IAmazonRekognition>();
 
-            var connString = GetDatabaseConnectionString(builder.Configuration);
+            string connString = GetDatabaseConnectionString(builder.Configuration);
             builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(connString));
             builder.Services.AddSession();
 
@@ -49,7 +50,7 @@ namespace Bookstore.Web.Startup
             // the secret.
             const string DbSecretsParameterName = "dbsecretsname";
 
-            var connString = configuration.GetConnectionString("BookstoreDbDefaultConnection");
+            string connString = configuration.GetConnectionString("BookstoreDbDefaultConnection");
             if (!string.IsNullOrEmpty(connString))
             {
                 Console.WriteLine("Using localdb connection string");
@@ -58,7 +59,7 @@ namespace Bookstore.Web.Startup
 
             try
             {
-                var dbSecretId = configuration[DbSecretsParameterName];
+                string dbSecretId = configuration[DbSecretsParameterName];
                 Console.WriteLine($"Reading db credentials from secret {dbSecretId}");
 
                 // Read the db secrets posted into Secrets Manager by the CDK. The secret provides the host,
@@ -67,7 +68,7 @@ namespace Bookstore.Web.Startup
                 // region info. When deployed to an EC2 instance, credentials and region will be inferred from
                 // the instance profile applied to the instance.
                 IAmazonSecretsManager secretsManagerClient;
-                var options = configuration.GetAWSOptions();
+                AWSOptions options = configuration.GetAWSOptions();
                 if (options != null)
                 {
                     // local "integrated" debug mode using credentials/region in appsettings
@@ -78,19 +79,19 @@ namespace Bookstore.Web.Startup
                     // deployed mode using credentials/region inferred on host
                     secretsManagerClient = new AmazonSecretsManagerClient();
                 }
-                var response = secretsManagerClient.GetSecretValueAsync(new GetSecretValueRequest
+                GetSecretValueResponse response = secretsManagerClient.GetSecretValueAsync(new GetSecretValueRequest
                 {
                     SecretId = dbSecretId
                 }).Result;
 
-                var dbSecrets = JsonSerializer.Deserialize<DbSecrets>(response.SecretString, new JsonSerializerOptions
+                DbSecrets dbSecrets = JsonSerializer.Deserialize<DbSecrets>(response.SecretString, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
 
-                var partialConnString = $"Server={dbSecrets.Host},{dbSecrets.Port}; Initial Catalog=BobsUsedBookStore;MultipleActiveResultSets=true; Integrated Security=false";
+                string partialConnString = $"Server={dbSecrets.Host},{dbSecrets.Port}; Initial Catalog=BobsUsedBookStore;MultipleActiveResultSets=true; Integrated Security=false";
 
-                var builder = new SqlConnectionStringBuilder(partialConnString)
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(partialConnString)
                 {
                     UserID = dbSecrets.Username,
                     Password = dbSecrets.Password

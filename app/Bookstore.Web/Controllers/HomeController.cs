@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var books = await bookService.ListBestSellingBooksAsync(4);
+            IEnumerable<Book> books = await bookService.ListBestSellingBooksAsync(4);
 
             return View(new HomeIndexViewModel(books));
         }

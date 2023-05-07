@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.Resale.ResaleIndexViewModel
+﻿@using Bookstore.Web.ViewModel.Resale
+@model Bookstore.Web.ViewModel.Resale.ResaleIndexViewModel
 
 @{ ViewData["Title"] = "Index"; }
 
@@ -46,7 +47,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.Items)
+        @foreach (ResaleIndexItemViewModel item in Model.Items)
         {
             <tr>
                 <td>

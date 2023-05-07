@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Bookstore.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Bookstore.Web.Areas.Admin.Models.Inventory;
 using Bookstore.Domain.Books;
@@ -19,22 +21,22 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(BookFilters filters, int pageIndex = 1, int pageSize = 10)
         {
-            var books = await bookService.GetBooksAsync(filters, pageIndex, pageSize);
-            var referenceDataItems = await referenceDataService.GetAllReferenceDataAsync();
+            IPaginatedList<Book> books = await bookService.GetBooksAsync(filters, pageIndex, pageSize);
+            IEnumerable<ReferenceDataItem> referenceDataItems = await referenceDataService.GetAllReferenceDataAsync();
 
             return View(new InventoryIndexViewModel(books, referenceDataItems));
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var book = await bookService.GetBookAsync(id);
+            Book book = await bookService.GetBookAsync(id);
 
             return View(new InventoryDetailsViewModel(book));
         }
 
         public async Task<IActionResult> Create()
         {
-            var referenceDataItemDtos = await referenceDataService.GetAllReferenceDataAsync();
+            IEnumerable<ReferenceDataItem> referenceDataItemDtos = await referenceDataService.GetAllReferenceDataAsync();
 
             return View("CreateUpdate", new InventoryCreateUpdateViewModel(referenceDataItemDtos));
         }
@@ -44,7 +46,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return await InvalidCreateUpdateView(model);
 
-            var dto = new CreateBookDto(
+            CreateBookDto dto = new CreateBookDto(
                 model.Name, 
                 model.Author, 
                 model.SelectedBookTypeId, 
@@ -59,15 +61,15 @@ namespace Bookstore.Web.Areas.Admin.Controllers
                 model.CoverImage?.OpenReadStream(), 
                 model.CoverImage?.FileName);
 
-            var result = await bookService.AddAsync(dto);
+            BookResult result = await bookService.AddAsync(dto);
 
             return await ProcessBookResultAsync(model, result, $"{model.Name} has been added to inventory");
         }
 
         public async Task<IActionResult> Update(int id)
         {
-            var book = await bookService.GetBookAsync(id);
-            var referenceDataDtos = await referenceDataService.GetAllReferenceDataAsync();
+            Book book = await bookService.GetBookAsync(id);
+            IEnumerable<ReferenceDataItem> referenceDataDtos = await referenceDataService.GetAllReferenceDataAsync();
 
             return View("CreateUpdate", new InventoryCreateUpdateViewModel(referenceDataDtos, book));
         }
@@ -77,7 +79,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return await InvalidCreateUpdateView(model);
 
-            var dto = new UpdateBookDto(
+            UpdateBookDto dto = new UpdateBookDto(
                 model.Id,
                 model.Name,
                 model.Author,
@@ -93,7 +95,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
                 model.CoverImage?.OpenReadStream(),
                 model.CoverImage?.FileName);
 
-            var result = await bookService.UpdateAsync(dto);
+            BookResult result = await bookService.UpdateAsync(dto);
 
             return await ProcessBookResultAsync(model, result, $"{model.Name} has been updated");
         }
@@ -116,7 +118,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         private async Task<IActionResult> InvalidCreateUpdateView(InventoryCreateUpdateViewModel model)
         {
-            var referenceDataItemDtos = await referenceDataService.GetAllReferenceDataAsync();
+            IEnumerable<ReferenceDataItem> referenceDataItemDtos = await referenceDataService.GetAllReferenceDataAsync();
 
             model.AddReferenceData(referenceDataItemDtos);
 

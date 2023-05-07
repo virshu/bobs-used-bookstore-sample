@@ -27,7 +27,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Inventory
 
         public InventoryIndexViewModel(IPaginatedList<Book> books, IEnumerable<ReferenceDataItem> referenceDataItems)
         {
-            foreach (var book in books)
+            foreach (Book book in books)
             {
                 Items.Add(new InventoryIndexListItemViewModel
                 {

@@ -14,7 +14,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Orders
 
         public OrderIndexViewModel(IPaginatedList<Order> orderDtos, OrderFilters filters)
         {
-            foreach (var order in orderDtos)
+            foreach (Order order in orderDtos)
             {
                 Items.Add(new OrderIndexListItemViewModel
                 {

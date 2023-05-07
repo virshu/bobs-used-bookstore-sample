@@ -35,7 +35,7 @@
 
         public void MoveWishListItemToShoppingCart(int shoppingCartItemId)
         {
-            var wishListItem = ShoppingCartItems.SingleOrDefault(x => x.Id == shoppingCartItemId);
+            ShoppingCartItem? wishListItem = ShoppingCartItems.SingleOrDefault(x => x.Id == shoppingCartItemId);
 
             if (wishListItem == null) return;
 
@@ -44,7 +44,7 @@
 
         public void RemoveShoppingCartItemById(int shoppingCartItemId)
         {
-            var shoppingCartItem = ShoppingCartItems.Single(x => x.Id == shoppingCartItemId);
+            ShoppingCartItem? shoppingCartItem = ShoppingCartItems.Single(x => x.Id == shoppingCartItemId);
 
             ShoppingCartItems.Remove(shoppingCartItem);
         }

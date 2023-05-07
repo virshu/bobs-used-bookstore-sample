@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Bookstore.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Bookstore.Domain.Offers;
 using Bookstore.Domain.ReferenceData;
@@ -19,8 +21,8 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(OfferFilters filters, int pageIndex = 1, int pageSize = 10)
         {
-            var offers = await offerService.GetOffersAsync(filters, pageIndex, pageSize);
-            var referenceData = await referenceDataService.GetAllReferenceDataAsync();
+            IPaginatedList<Offer> offers = await offerService.GetOffersAsync(filters, pageIndex, pageSize);
+            IEnumerable<ReferenceDataItem> referenceData = await referenceDataService.GetAllReferenceDataAsync();
 
             return View(new OfferIndexViewModel(offers, referenceData));
         }
@@ -51,7 +53,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         private async Task<IActionResult> UpdateOfferStatus(int id, OfferStatus status, string message)
         {
-            var dto = new UpdateOfferStatusDto(id, status);
+            UpdateOfferStatusDto dto = new UpdateOfferStatusDto(id, status);
 
             await offerService.UpdateOfferStatusAsync(dto);
 

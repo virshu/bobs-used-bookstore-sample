@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.Orders.OrderDetailsViewModel
+﻿@using Bookstore.Web.ViewModel.Orders
+@model Bookstore.Web.ViewModel.Orders.OrderDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -33,7 +34,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var book in Model.OrderItems)
+            @foreach (OrderDetailsItemViewModel book in Model.OrderItems)
             {
                 <tr>
                     <td>

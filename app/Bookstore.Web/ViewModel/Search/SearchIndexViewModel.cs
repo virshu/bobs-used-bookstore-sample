@@ -17,7 +17,7 @@ namespace Bookstore.Web.ViewModel.Search
 
         public SearchIndexViewModel(IPaginatedList<Book> books)
         {
-            foreach (var book in books)
+            foreach (Book book in books)
             {
                 Books.Add(new SearchIndexItemViewModel
                 {

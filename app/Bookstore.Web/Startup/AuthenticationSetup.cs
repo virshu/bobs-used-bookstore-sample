@@ -95,7 +95,7 @@ namespace Bookstore.Web.Startup
             context.ProtocolMessage.Scope = "openid";
             context.ProtocolMessage.ResponseType = "code";
 
-            var logoutUrl = $"{context.Request.Scheme}://{context.Request.Host}{_cognitoAppSignOutUrl}";
+            string logoutUrl = $"{context.Request.Scheme}://{context.Request.Host}{_cognitoAppSignOutUrl}";
 
             context.ProtocolMessage.IssuerAddress = $"{_cognitoDomain}/logout?client_id={_cognitoClientId}&logout_uri={logoutUrl}";
 
@@ -108,9 +108,9 @@ namespace Bookstore.Web.Startup
 
         private static async Task SaveCustomerDetailsAsync(TokenValidatedContext context)
         {
-            var customerService = context.HttpContext.RequestServices.GetService<ICustomerService>();
+            ICustomerService customerService = context.HttpContext.RequestServices.GetService<ICustomerService>();
 
-            var dto = new CreateOrUpdateCustomerDto(
+            CreateOrUpdateCustomerDto dto = new CreateOrUpdateCustomerDto(
                 context.Principal.GetSub(),
                 context.Principal.Identity.Name,
                 context.Principal.FindFirst("given_name").Value,

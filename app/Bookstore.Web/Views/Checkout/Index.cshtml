@@ -1,4 +1,5 @@
-﻿@model Bookstore.Web.ViewModel.Checkout.CheckoutIndexViewModel
+﻿@using Bookstore.Web.ViewModel.Checkout
+@model Bookstore.Web.ViewModel.Checkout.CheckoutIndexViewModel
 
 <div class="panel-body">
 
@@ -40,7 +41,7 @@
             </thead>
             <tbody>
 
-            @foreach (var address in Model.Addresses)
+            @foreach (CheckoutAddressViewModel address in Model.Addresses)
             {
                 <tr>
                     <td>
@@ -98,7 +99,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.ShoppingCartItems)
+        @foreach (CheckoutItemViewModel item in Model.ShoppingCartItems)
         {
             <tr>
                 <td>

@@ -23,8 +23,8 @@ namespace Bookstore.Data.FileServices
         {
             if (string.IsNullOrWhiteSpace(filePath)) return;
 
-            var bucketName = configuration["AWS:BucketName"];
-            var request = new DeleteObjectRequest
+            string bucketName = configuration["AWS:BucketName"];
+            DeleteObjectRequest request = new DeleteObjectRequest
             {
                 BucketName = bucketName,
                 Key = Path.GetFileName(filePath)
@@ -37,11 +37,11 @@ namespace Bookstore.Data.FileServices
         {
             if (contents == null) return null;
 
-            var bucketName = configuration["AWS:BucketName"];
-            var uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
-            var cloudFrontDomain = configuration["AWS:CloudFrontDomain"];
+            string bucketName = configuration["AWS:BucketName"];
+            string uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
+            string cloudFrontDomain = configuration["AWS:CloudFrontDomain"];
 
-            var request = new TransferUtilityUploadRequest
+            TransferUtilityUploadRequest request = new TransferUtilityUploadRequest
             {
                 BucketName = bucketName,
                 InputStream = contents,

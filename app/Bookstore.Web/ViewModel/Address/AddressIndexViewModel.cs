@@ -8,7 +8,7 @@ namespace Bookstore.Web.ViewModel.Address
 
         public AddressIndexViewModel(IEnumerable<Domain.Addresses.Address> addresses)
         {
-            foreach (var address in addresses)
+            foreach (Domain.Addresses.Address address in addresses)
             {
                 Items.Add(new AddressIndexItemViewModel
                 {

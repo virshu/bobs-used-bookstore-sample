@@ -22,11 +22,11 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var orderStats = await orderService.GetStatisticsAsync();
-            var offerStats = await offerService.GetStatisticsAsync();
-            var inventoryStats = await bookService.GetStatisticsAsync();
+            OrderStatistics orderStats = await orderService.GetStatisticsAsync();
+            OfferStatistics offerStats = await offerService.GetStatisticsAsync();
+            BookStatistics inventoryStats = await bookService.GetStatisticsAsync();
 
-            var model = new DashboardIndexViewModel
+            DashboardIndexViewModel model = new DashboardIndexViewModel
             {
                 PastDueOrders = orderStats.PastDueOrders,
                 PendingOrders = orderStats.PendingOrders,
