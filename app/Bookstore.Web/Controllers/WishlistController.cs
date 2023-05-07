@@ -30,7 +30,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> MoveToShoppingCart(int shoppingCartItemId)
         {
-            MoveWishlistItemToShoppingCartDto dto = new MoveWishlistItemToShoppingCartDto(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
+            MoveWishlistItemToShoppingCartDto dto = new(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
 
             await shoppingCartService.MoveWishlistItemToShoppingCartAsync(dto);
 
@@ -42,7 +42,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> MoveAllItemsToShoppingCart()
         {
-            MoveAllWishlistItemsToShoppingCartDto dto = new MoveAllWishlistItemsToShoppingCartDto(HttpContext.GetShoppingCartCorrelationId());
+            MoveAllWishlistItemsToShoppingCartDto dto = new(HttpContext.GetShoppingCartCorrelationId());
 
             await shoppingCartService.MoveAllWishlistItemsToShoppingCartAsync(dto);
 
@@ -54,7 +54,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int shoppingCartItemId)
         {
-            DeleteShoppingCartItemDto dto = new DeleteShoppingCartItemDto(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
+            DeleteShoppingCartItemDto dto = new(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
 
             await shoppingCartService.DeleteShoppingCartItemAsync(dto);
 

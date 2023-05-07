@@ -46,7 +46,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return await InvalidCreateUpdateView(model);
 
-            CreateBookDto dto = new CreateBookDto(
+            CreateBookDto dto = new(
                 model.Name, 
                 model.Author, 
                 model.SelectedBookTypeId, 
@@ -79,7 +79,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return await InvalidCreateUpdateView(model);
 
-            UpdateBookDto dto = new UpdateBookDto(
+            UpdateBookDto dto = new(
                 model.Id,
                 model.Name,
                 model.Author,

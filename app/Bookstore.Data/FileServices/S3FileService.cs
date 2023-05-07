@@ -24,7 +24,7 @@ namespace Bookstore.Data.FileServices
             if (string.IsNullOrWhiteSpace(filePath)) return;
 
             string bucketName = configuration["AWS:BucketName"];
-            DeleteObjectRequest request = new DeleteObjectRequest
+            DeleteObjectRequest request = new()
             {
                 BucketName = bucketName,
                 Key = Path.GetFileName(filePath)
@@ -41,7 +41,7 @@ namespace Bookstore.Data.FileServices
             string uniqueFilename = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{Path.GetExtension(filename)}";
             string cloudFrontDomain = configuration["AWS:CloudFrontDomain"];
 
-            TransferUtilityUploadRequest request = new TransferUtilityUploadRequest
+            TransferUtilityUploadRequest request = new()
             {
                 BucketName = bucketName,
                 InputStream = contents,

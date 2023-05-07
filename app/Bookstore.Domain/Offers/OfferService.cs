@@ -48,7 +48,7 @@ namespace Bookstore.Domain.Offers
         {
             Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-            Offer? offer = new Offer(
+            Offer? offer = new(
                 customer.Id,
                 dto.BookName,
                 dto.Author,

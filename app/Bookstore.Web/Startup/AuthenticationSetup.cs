@@ -110,7 +110,7 @@ namespace Bookstore.Web.Startup
         {
             ICustomerService customerService = context.HttpContext.RequestServices.GetService<ICustomerService>();
 
-            CreateOrUpdateCustomerDto dto = new CreateOrUpdateCustomerDto(
+            CreateOrUpdateCustomerDto dto = new(
                 context.Principal.GetSub(),
                 context.Principal.Identity.Name,
                 context.Principal.FindFirst("given_name").Value,

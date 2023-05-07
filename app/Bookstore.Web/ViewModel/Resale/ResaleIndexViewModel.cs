@@ -6,7 +6,7 @@ namespace Bookstore.Web.ViewModel.Resale
 {
     public class ResaleIndexViewModel
     {
-        public List<ResaleIndexItemViewModel> Items { get; set; } = new List<ResaleIndexItemViewModel>();
+        public List<ResaleIndexItemViewModel> Items { get; set; } = new();
 
         public ResaleIndexViewModel(IEnumerable<Offer> offers)
         {

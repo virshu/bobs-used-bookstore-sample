@@ -21,7 +21,7 @@ namespace Bookstore.Web.Helpers
 
         protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            ClaimsIdentity identity = new(CookieAuthenticationDefaults.AuthenticationScheme);
 
             identity.AddClaim(new Claim(ClaimTypes.Name, "bookstoreuser"));
             identity.AddClaim(new Claim("sub", UserId));
@@ -42,7 +42,7 @@ namespace Bookstore.Web.Helpers
         {
             ICustomerService customerService = context.RequestServices.GetService<ICustomerService>();
 
-            CreateOrUpdateCustomerDto dto = new CreateOrUpdateCustomerDto(
+            CreateOrUpdateCustomerDto dto = new(
                 identity.FindFirst("Sub").Value,
                 identity.Name,
                 identity.FindFirst("given_name").Value,

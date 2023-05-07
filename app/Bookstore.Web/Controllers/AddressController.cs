@@ -28,7 +28,7 @@ namespace Bookstore.Web.Controllers
 
         public IActionResult Create(string returnUrl)
         {
-            AddressCreateUpdateViewModel model = new AddressCreateUpdateViewModel(returnUrl);
+            AddressCreateUpdateViewModel model = new(returnUrl);
 
             return View("CreateUpdate", model);
         }
@@ -38,7 +38,7 @@ namespace Bookstore.Web.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            CreateAddressDto dto = new CreateAddressDto(model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
+            CreateAddressDto dto = new(model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
 
             await addressService.CreateAddressAsync(dto);
 
@@ -57,7 +57,7 @@ namespace Bookstore.Web.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            UpdateAddressDto dto = new UpdateAddressDto(model.Id, model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
+            UpdateAddressDto dto = new(model.Id, model.AddressLine1, model.AddressLine2, model.City, model.State, model.Country, model.ZipCode, User.GetSub());
 
             await addressService.UpdateAddressAsync(dto);
 
@@ -67,7 +67,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            DeleteAddressDto dto = new DeleteAddressDto(id, User.GetSub());
+            DeleteAddressDto dto = new(id, User.GetSub());
 
             await addressService.DeleteAddressAsync(dto);
 

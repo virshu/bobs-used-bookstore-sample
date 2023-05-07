@@ -53,7 +53,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         private async Task<IActionResult> UpdateOfferStatus(int id, OfferStatus status, string message)
         {
-            UpdateOfferStatusDto dto = new UpdateOfferStatusDto(id, status);
+            UpdateOfferStatusDto dto = new(id, status);
 
             await offerService.UpdateOfferStatusAsync(dto);
 

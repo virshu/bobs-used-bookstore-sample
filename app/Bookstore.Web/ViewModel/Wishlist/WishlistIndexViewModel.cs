@@ -5,7 +5,7 @@ namespace Bookstore.Web.ViewModel.Wishlist
 {
     public class WishlistIndexViewModel
     {
-        public List<WishlistIndexItemViewModel> WishlistItems { get; set; } = new List<WishlistIndexItemViewModel>();
+        public List<WishlistIndexItemViewModel> WishlistItems { get; set; } = new();
 
         public WishlistIndexViewModel(Domain.Carts.ShoppingCart shoppingCart)
         {

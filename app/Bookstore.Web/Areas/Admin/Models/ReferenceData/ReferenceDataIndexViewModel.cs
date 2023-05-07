@@ -7,9 +7,9 @@ namespace Bookstore.Web.Areas.Admin.Models.ReferenceData
 {
     public class ReferenceDataIndexViewModel : PaginatedViewModel
     {
-        public List<ReferenceDataIndexListItemViewModel> Items { get; set; } = new List<ReferenceDataIndexListItemViewModel>();
+        public List<ReferenceDataIndexListItemViewModel> Items { get; set; } = new();
 
-        public ReferenceDataFilters Filters { get; set; } = new ReferenceDataFilters();
+        public ReferenceDataFilters Filters { get; set; } = new();
 
         public ReferenceDataIndexViewModel(IPaginatedList<ReferenceDataItem> referenceDataItems, ReferenceDataFilters filters)
         {

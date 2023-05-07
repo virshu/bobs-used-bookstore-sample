@@ -14,8 +14,8 @@ namespace Bookstore.Web.Areas.Admin.Models
 
         public bool HasPreviousPage { get; set; }
 
-        public List<int> PaginationButtons { get; set; } = new List<int>();
+        public List<int> PaginationButtons { get; set; } = new();
 
-        public Dictionary<string, string> RouteData { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> RouteData { get; set; } = new();
     }
 }

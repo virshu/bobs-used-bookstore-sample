@@ -62,7 +62,7 @@ namespace Bookstore.Domain.Orders
 
             Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-            Order? order = new Order(customer.Id, dto.AddressId);
+            Order? order = new(customer.Id, dto.AddressId);
 
             await orderRepository.AddAsync(order);
 

@@ -63,7 +63,7 @@ namespace Bookstore.Domain.Books
 
         public async Task<BookResult> AddAsync(CreateBookDto dto)
         {
-            Book? book = new Book(
+            Book? book = new(
                 dto.Name,
                 dto.Author,
                 dto.ISBN,

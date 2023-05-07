@@ -8,7 +8,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Orders
 {
     public class OrderIndexViewModel : PaginatedViewModel
     {
-        public List<OrderIndexListItemViewModel> Items { get; set; } = new List<OrderIndexListItemViewModel>();
+        public List<OrderIndexListItemViewModel> Items { get; set; } = new();
 
         public OrderFilters Filters { get; set; }
 

@@ -177,7 +177,7 @@ public class EC2ComputeStack : Stack
             Owners = new[] { "amazon" }
         });
 
-        SecurityGroup webAppSecurityGroup = new SecurityGroup(this, $"{Constants.AppName}AppSecurityGroup", new SecurityGroupProps
+        SecurityGroup webAppSecurityGroup = new(this, $"{Constants.AppName}AppSecurityGroup", new SecurityGroupProps
         {
             Vpc = props.Vpc,
             Description = "Allow HTTP(S) access to Bobs Bookstore website",
@@ -240,7 +240,7 @@ public class EC2ComputeStack : Stack
 
     internal void CreateCognitoUserPoolClient(EC2ComputeStackProps props)
     {
-        UserPoolClient Ec2UserPoolClient = new UserPoolClient(this, "EC2Client", new UserPoolClientProps
+        UserPoolClient Ec2UserPoolClient = new(this, "EC2Client", new UserPoolClientProps
         {
             UserPool = props.WebAppUserPool,
             GenerateSecret = false,

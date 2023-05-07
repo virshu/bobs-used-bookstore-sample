@@ -39,7 +39,7 @@
 
         public async Task CreateAsync(CreateReferenceDataItemDto dto)
         {
-            ReferenceDataItem? referenceDataItem = new ReferenceDataItem(dto.ReferenceDataType, dto.Text);
+            ReferenceDataItem? referenceDataItem = new(dto.ReferenceDataType, dto.Text);
 
             await referenceDataRepository.AddAsync(referenceDataItem);
 

@@ -6,7 +6,7 @@ namespace Bookstore.Web.ViewModel.Home
 {
     public class HomeIndexViewModel
     {
-        public List<HomeIndexItemViewModel> Books { get; set; } = new List<HomeIndexItemViewModel>();
+        public List<HomeIndexItemViewModel> Books { get; set; } = new();
 
         public HomeIndexViewModel(IEnumerable<Book> books)
         {

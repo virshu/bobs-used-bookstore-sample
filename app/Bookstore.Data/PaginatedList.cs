@@ -80,7 +80,7 @@ namespace Bookstore.Domain
 
         public IPaginatedList<TConvertTo> ConvertTo<TConvertTo>(Func<T, TConvertTo> convert)
         {
-            PaginatedList<TConvertTo> result = new PaginatedList<TConvertTo>
+            PaginatedList<TConvertTo> result = new()
             {
                 PageIndex = PageIndex,
                 TotalPages = TotalPages,

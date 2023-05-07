@@ -32,7 +32,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Details(OrderDetailsViewModel model)
         {
-            UpdateOrderStatusDto dto = new UpdateOrderStatusDto(model.OrderId, model.SelectedOrderStatus);
+            UpdateOrderStatusDto dto = new(model.OrderId, model.SelectedOrderStatus);
 
             await orderService.UpdateOrderStatusAsync(dto);
 

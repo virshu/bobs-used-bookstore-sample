@@ -4,7 +4,7 @@ namespace Bookstore.Web.ViewModel.Address
 {
     public class AddressIndexViewModel
     {
-        public List<AddressIndexItemViewModel> Items { get; set; } = new List<AddressIndexItemViewModel>();
+        public List<AddressIndexItemViewModel> Items { get; set; } = new();
 
         public AddressIndexViewModel(IEnumerable<Domain.Addresses.Address> addresses)
         {

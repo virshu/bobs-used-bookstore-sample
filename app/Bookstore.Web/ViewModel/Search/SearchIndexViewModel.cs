@@ -13,7 +13,7 @@ namespace Bookstore.Web.ViewModel.Search
 
         public string SortBy { get; set; }
 
-        public List<SearchIndexItemViewModel> Books { get; set; } = new List<SearchIndexItemViewModel>();
+        public List<SearchIndexItemViewModel> Books { get; set; } = new();
 
         public SearchIndexViewModel(IPaginatedList<Book> books)
         {

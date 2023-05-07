@@ -89,7 +89,7 @@ namespace Bookstore.Data.Repositories
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Book);
 
-            PaginatedList<Order> result = new PaginatedList<Order>(query, pageIndex, pageSize);
+            PaginatedList<Order> result = new(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

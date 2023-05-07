@@ -73,7 +73,7 @@ namespace Bookstore.Data.Repositories
                 .Include(x => x.BookType)
                 .Include(x => x.Condition);
 
-            PaginatedList<Book> result = new PaginatedList<Book>(query, pageIndex, pageSize);
+            PaginatedList<Book> result = new(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 
@@ -101,7 +101,7 @@ namespace Bookstore.Data.Repositories
                 _ => query.OrderBy(x => x.Name),
             };
 
-            PaginatedList<Book> result = new PaginatedList<Book>(query, pageIndex, pageSize);
+            PaginatedList<Book> result = new(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

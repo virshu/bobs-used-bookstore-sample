@@ -12,7 +12,7 @@ namespace Bookstore.Domain.Orders
             AddressId = addressId;
         }
 
-        private readonly List<OrderItem> orderItems = new List<OrderItem>();
+        private readonly List<OrderItem> orderItems = new();
 
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }

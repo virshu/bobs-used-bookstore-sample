@@ -26,7 +26,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
             OfferStatistics offerStats = await offerService.GetStatisticsAsync();
             BookStatistics inventoryStats = await bookService.GetStatisticsAsync();
 
-            DashboardIndexViewModel model = new DashboardIndexViewModel
+            DashboardIndexViewModel model = new()
             {
                 PastDueOrders = orderStats.PastDueOrders,
                 PendingOrders = orderStats.PendingOrders,

@@ -37,7 +37,7 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> AddItemToShoppingCart(int bookId)
         {
-            AddToShoppingCartDto dto = new AddToShoppingCartDto(HttpContext.GetShoppingCartCorrelationId(), bookId, 1);
+            AddToShoppingCartDto dto = new(HttpContext.GetShoppingCartCorrelationId(), bookId, 1);
 
             await shoppingCartService.AddToShoppingCartAsync(dto);
 
@@ -48,7 +48,7 @@ namespace Bookstore.Web.Controllers
 
         public async Task<IActionResult> AddItemToWishlist(int bookId)
         {
-            AddToWishlistDto dto = new AddToWishlistDto(HttpContext.GetShoppingCartCorrelationId(), bookId);
+            AddToWishlistDto dto = new(HttpContext.GetShoppingCartCorrelationId(), bookId);
 
             await shoppingCartService.AddToWishlistAsync(dto);
 

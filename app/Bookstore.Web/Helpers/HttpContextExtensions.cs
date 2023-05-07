@@ -9,7 +9,7 @@ namespace Bookstore.Web.Helpers
         {
             string CookieKey = "ShoppingCartId";
 
-            CookieOptions cookieOptions = new CookieOptions
+            CookieOptions cookieOptions = new()
             {
                 Expires = DateTime.Now.AddYears(1),
                 Path = "/"

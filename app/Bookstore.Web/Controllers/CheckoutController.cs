@@ -35,7 +35,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CheckoutIndexViewModel model)
         {
-            CreateOrderDto dto = new CreateOrderDto(User.GetSub(), HttpContext.GetShoppingCartCorrelationId(), model.SelectedAddressId);
+            CreateOrderDto dto = new(User.GetSub(), HttpContext.GetShoppingCartCorrelationId(), model.SelectedAddressId);
 
             int orderId = await orderService.CreateOrderAsync(dto);
 

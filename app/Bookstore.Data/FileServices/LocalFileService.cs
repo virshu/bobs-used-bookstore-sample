@@ -31,7 +31,7 @@ namespace Bookstore.Data.FileServices
 
             if (!Directory.Exists(imageFolder)) Directory.CreateDirectory(imageFolder);
 
-            using FileStream filestream = new FileStream(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
+            using FileStream filestream = new(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
 
             await file.CopyToAsync(filestream);
 

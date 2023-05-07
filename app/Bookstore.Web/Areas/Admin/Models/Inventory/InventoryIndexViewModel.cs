@@ -11,9 +11,9 @@ namespace Bookstore.Web.Areas.Admin.Models.Inventory
     public class InventoryIndexViewModel : PaginatedViewModel
     {
 
-        public List<InventoryIndexListItemViewModel> Items { get; set; } = new List<InventoryIndexListItemViewModel>();
+        public List<InventoryIndexListItemViewModel> Items { get; set; } = new();
 
-        public BookFilters Filters { get; set; } = new BookFilters();
+        public BookFilters Filters { get; set; } = new();
 
         public IEnumerable<SelectListItem> Publishers { get; set; } = new List<SelectListItem>();
 

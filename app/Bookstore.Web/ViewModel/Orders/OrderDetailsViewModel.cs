@@ -16,7 +16,7 @@ namespace Bookstore.Web.ViewModel.Orders
 
         public decimal Total { get; set; }
 
-        public List<OrderDetailsItemViewModel> OrderItems { get; set; } = new List<OrderDetailsItemViewModel>();
+        public List<OrderDetailsItemViewModel> OrderItems { get; set; } = new();
 
         public OrderDetailsViewModel(Order order)
         {

@@ -19,7 +19,7 @@ public class DatabaseStack : Stack
 
     internal DatabaseStack(Construct scope, string id, DatabaseStackProps props) : base(scope, id, props)
     {
-        SecurityGroup dbSG = new SecurityGroup(this, "DatabaseSecurityGroup", new SecurityGroupProps
+        SecurityGroup dbSG = new(this, "DatabaseSecurityGroup", new SecurityGroupProps
         {
             Vpc = props.Vpc,
             Description = "Allow access to the SQL Server instance from the website",

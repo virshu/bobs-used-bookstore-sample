@@ -73,7 +73,7 @@ namespace Bookstore.Data.Repositories
 
             query = query.Include(x => x.Customer);
 
-            PaginatedList<Offer> result = new PaginatedList<Offer>(query, pageIndex, pageSize);
+            PaginatedList<Offer> result = new(query, pageIndex, pageSize);
 
             await result.PopulateAsync();
 

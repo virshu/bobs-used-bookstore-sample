@@ -20,15 +20,15 @@ internal sealed class Program
     // For more information refer to https://docs.aws.amazon.com/cdk/v2/guide/environments.html
     public static void Main()
     {
-        App app = new App();
+        App app = new();
 
         Environment env = MakeEnv();
 
-        CoreStack coreStack = new CoreStack(app, $"{Constants.AppName}Core", new StackProps { Env = env });
-        NetworkStack networkStack = new NetworkStack(app, $"{Constants.AppName}Network", new StackProps { Env = env });
-        DatabaseStack databaseStack = new DatabaseStack(app, $"{Constants.AppName}Database", new DatabaseStackProps { Env = env, Vpc = networkStack.Vpc });
+        CoreStack coreStack = new(app, $"{Constants.AppName}Core", new StackProps { Env = env });
+        NetworkStack networkStack = new(app, $"{Constants.AppName}Network", new StackProps { Env = env });
+        DatabaseStack databaseStack = new(app, $"{Constants.AppName}Database", new DatabaseStackProps { Env = env, Vpc = networkStack.Vpc });
 
-        EC2ComputeStack ec2Stack = new EC2ComputeStack(app, $"{Constants.AppName}EC2", new EC2ComputeStackProps 
+        EC2ComputeStack ec2Stack = new(app, $"{Constants.AppName}EC2", new EC2ComputeStackProps 
         { 
             Env = env, 
             Vpc = networkStack.Vpc, 

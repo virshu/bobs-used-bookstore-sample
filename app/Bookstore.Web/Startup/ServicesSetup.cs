@@ -91,7 +91,7 @@ namespace Bookstore.Web.Startup
 
                 string partialConnString = $"Server={dbSecrets.Host},{dbSecrets.Port}; Initial Catalog=BobsUsedBookStore;MultipleActiveResultSets=true; Integrated Security=false";
 
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(partialConnString)
+                SqlConnectionStringBuilder builder = new(partialConnString)
                 {
                     UserID = dbSecrets.Username,
                     Password = dbSecrets.Password

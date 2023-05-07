@@ -30,7 +30,7 @@ namespace Bookstore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int shoppingCartItemId)
         {
-            DeleteShoppingCartItemDto dto = new DeleteShoppingCartItemDto(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
+            DeleteShoppingCartItemDto dto = new(HttpContext.GetShoppingCartCorrelationId(), shoppingCartItemId);
 
             await shoppingCartService.DeleteShoppingCartItemAsync(dto);
 

@@ -38,7 +38,7 @@ namespace Bookstore.Web.Controllers
         {
             if (!ModelState.IsValid) return View();
 
-            CreateOfferDto dto = new CreateOfferDto(
+            CreateOfferDto dto = new(
                 User.GetSub(), 
                 resaleViewModel.BookName, 
                 resaleViewModel.Author, 

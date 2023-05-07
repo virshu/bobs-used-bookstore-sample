@@ -24,7 +24,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
 
         public IActionResult Create(ReferenceDataType? selectedReferenceDataType = null)
         {
-            ReferenceDataItemCreateUpdateViewModel model = new ReferenceDataItemCreateUpdateViewModel();
+            ReferenceDataItemCreateUpdateViewModel model = new();
 
             if (selectedReferenceDataType.HasValue) model.SelectedReferenceDataType = selectedReferenceDataType.Value;
 
@@ -34,7 +34,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ReferenceDataItemCreateUpdateViewModel model)
         {
-            CreateReferenceDataItemDto dto = new CreateReferenceDataItemDto(model.SelectedReferenceDataType, model.Text);
+            CreateReferenceDataItemDto dto = new(model.SelectedReferenceDataType, model.Text);
 
             await referenceDataService.CreateAsync(dto);
 
@@ -51,7 +51,7 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(ReferenceDataItemCreateUpdateViewModel model)
         {
-            UpdateReferenceDataItemDto dto = new UpdateReferenceDataItemDto(model.Id, model.SelectedReferenceDataType, model.Text);
+            UpdateReferenceDataItemDto dto = new(model.Id, model.SelectedReferenceDataType, model.Text);
 
             await referenceDataService.UpdateAsync(dto);
 

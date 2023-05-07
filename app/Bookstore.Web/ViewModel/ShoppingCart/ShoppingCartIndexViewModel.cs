@@ -8,7 +8,7 @@ namespace Bookstore.Web.ViewModel.ShoppingCart
     {
         public decimal TotalPrice => ShoppingCartItems.Sum(x => x.Price);
 
-        public List<ShoppingCartIndexItemViewModel> ShoppingCartItems { get; set; } = new List<ShoppingCartIndexItemViewModel>();
+        public List<ShoppingCartIndexItemViewModel> ShoppingCartItems { get; set; } = new();
 
         public ShoppingCartIndexViewModel(Domain.Carts.ShoppingCart shoppingCart)
         {

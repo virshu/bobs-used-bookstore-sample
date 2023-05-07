@@ -8,7 +8,7 @@ namespace Bookstore.Web.ViewModel.Orders
 {
     public class OrderIndexViewModel
     {
-        public List<OrderIndexItemViewModel> OrderItems { get; set; } = new List<OrderIndexItemViewModel>();
+        public List<OrderIndexItemViewModel> OrderItems { get; set; } = new();
 
         public OrderIndexViewModel(IEnumerable<Order> orders)
         {

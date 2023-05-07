@@ -8,11 +8,11 @@ namespace Bookstore.Web.ViewModel.Checkout
     {
         public decimal Total { get; set; }
 
-        public List<CheckoutAddressViewModel> Addresses { get; set; } = new List<CheckoutAddressViewModel>();
+        public List<CheckoutAddressViewModel> Addresses { get; set; } = new();
 
         public int SelectedAddressId { get; set; }
 
-        public List<CheckoutItemViewModel> ShoppingCartItems { get; set; } = new List<CheckoutItemViewModel>();
+        public List<CheckoutItemViewModel> ShoppingCartItems { get; set; } = new();
 
         public CheckoutIndexViewModel() { }
 

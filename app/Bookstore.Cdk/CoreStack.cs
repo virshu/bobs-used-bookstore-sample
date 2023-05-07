@@ -60,9 +60,9 @@ public class CoreStack : Stack
         //=========================================================================================
         // Access to the bucket is only granted to traffic coming from a CloudFront distribution
         //
-        OriginAccessIdentity cloudfrontOAI = new OriginAccessIdentity(this, "cloudfront-OAI");
+        OriginAccessIdentity cloudfrontOAI = new(this, "cloudfront-OAI");
 
-        PolicyStatementProps policyProps = new PolicyStatementProps
+        PolicyStatementProps policyProps = new()
         {
             Actions = new[] { "s3:GetObject" },
             Resources = new[] { ImageBucket.ArnForObjects("*") },
@@ -79,7 +79,7 @@ public class CoreStack : Stack
 
         // Place a CloudFront distribution in front of the storage bucket. S3 will only respond to
         // requests for objects if that request came from the CloudFront distribution.
-        CloudFrontWebDistributionProps distProps = new CloudFrontWebDistributionProps
+        CloudFrontWebDistributionProps distProps = new()
         {
             OriginConfigs = new[]
             {
@@ -106,7 +106,7 @@ public class CoreStack : Stack
             ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS
         };
 
-        CloudFrontWebDistribution distribution = new CloudFrontWebDistribution(this, "SiteDistribution", distProps);
+        CloudFrontWebDistribution distribution = new(this, "SiteDistribution", distProps);
 
         _ = new StringParameter(this, "CoverImages-Distribution", new StringParameterProps
         {
@@ -147,7 +147,7 @@ public class CoreStack : Stack
         const string UserName = "admin";
 
         // Create default admin user for testing
-        AwsCustomResource defaultUser = new AwsCustomResource(this, "CreateAdminUser", new AwsCustomResourceProps
+        AwsCustomResource defaultUser = new(this, "CreateAdminUser", new AwsCustomResourceProps
         {
             OnCreate = new AwsSdkCall
             {
@@ -175,7 +175,7 @@ public class CoreStack : Stack
             Policy = AwsCustomResourcePolicy.FromSdkCalls(new SdkCallsPolicyOptions { Resources = AwsCustomResourcePolicy.ANY_RESOURCE })
         });
 
-        CfnUserPoolUserToGroupAttachment adminUserAttachment = new CfnUserPoolUserToGroupAttachment(this, "AttachAdminUserToAdministratorsGroup", new CfnUserPoolUserToGroupAttachmentProps
+        CfnUserPoolUserToGroupAttachment adminUserAttachment = new(this, "AttachAdminUserToAdministratorsGroup", new CfnUserPoolUserToGroupAttachmentProps
         {
             GroupName = CognitoAdminUserGroup.GroupName,
             Username = UserName,
@@ -187,7 +187,7 @@ public class CoreStack : Stack
 
     internal void CreateUserPoolClient()
     {
-        UserPoolClient localClient = new UserPoolClient(this, "LocalClient", new UserPoolClientProps
+        UserPoolClient localClient = new(this, "LocalClient", new UserPoolClientProps
         {
             UserPool = WebAppUserPool,
             GenerateSecret = false,

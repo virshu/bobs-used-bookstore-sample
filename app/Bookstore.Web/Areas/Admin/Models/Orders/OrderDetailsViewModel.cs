@@ -34,7 +34,7 @@ namespace Bookstore.Web.Areas.Admin.Models.Orders
 
         public decimal Total => Subtotal + Tax;
 
-        public List<OrderDetailsItemViewModel> Items { get; set; } = new List<OrderDetailsItemViewModel>();
+        public List<OrderDetailsItemViewModel> Items { get; set; } = new();
 
         public OrderDetailsViewModel() { }
 

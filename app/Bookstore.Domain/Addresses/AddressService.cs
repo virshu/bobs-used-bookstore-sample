@@ -39,7 +39,7 @@ namespace Bookstore.Domain.Addresses
         public async Task CreateAddressAsync(CreateAddressDto dto)
         {
             Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
-            Address? address = new Address(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
+            Address? address = new(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
 
             await addressRepository.AddAsync(address);
 
