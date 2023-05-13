@@ -7,7 +7,7 @@ public static class ConfigurationSetup
 {
     public static WebApplicationBuilder ConfigureConfiguration(this WebApplicationBuilder builder)
     {
-        builder.Configuration.AddSystemsManager("/BobsBookstore/", optional: true);
+        builder.Configuration.AddSystemsManager("/BobsBookstore/" /*, optional: true*/);
 
         return builder;
     }

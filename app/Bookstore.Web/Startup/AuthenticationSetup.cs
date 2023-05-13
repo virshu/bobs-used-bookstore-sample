@@ -67,7 +67,7 @@ public static class AuthenticationSetup
             .AddCookie()
             .AddOpenIdConnect(x =>
             {
-                x.ResponseType = builder.Configuration["Authentication:Cognito:ResponseType"];
+                x.ResponseType = builder.Configuration["Authentication:Cognito:ResponseType"]!;
                 x.MetadataAddress = builder.Configuration["Authentication:Cognito:MetadataAddress"];
                 x.ClientId = CognitoClientIdHelper.GetClientId(builder);
                 x.TokenValidationParameters = new TokenValidationParameters
