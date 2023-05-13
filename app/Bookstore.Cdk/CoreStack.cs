@@ -177,7 +177,7 @@ public class CoreStack : Stack
 
         CfnUserPoolUserToGroupAttachment adminUserAttachment = new(this, "AttachAdminUserToAdministratorsGroup", new CfnUserPoolUserToGroupAttachmentProps
         {
-            GroupName = CognitoAdminUserGroup.GroupName,
+            GroupName = CognitoAdminUserGroup.GroupName!,
             Username = UserName,
             UserPoolId = WebAppUserPool.UserPoolId
         });

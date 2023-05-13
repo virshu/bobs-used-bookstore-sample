@@ -40,12 +40,10 @@ internal sealed class Program
         app.Synth();
     }
 
-    private static Environment MakeEnv(string account = null, string region = null)
-    {
-        return new Environment
+    private static Environment MakeEnv(string account = null, string region = null) =>
+        new()
         {
             Account = account ?? System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
             Region = region ?? System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
         };
-    }
 }

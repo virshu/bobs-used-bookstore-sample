@@ -13,20 +13,13 @@ namespace Bookstore.Web.Startup;
 
 public static class CognitoClientIdHelper
 {
-    public static string GetClientId(WebApplicationBuilder builder)
-    {
-        switch (builder.Configuration["AWS:Service"])
+    public static string GetClientId(WebApplicationBuilder builder) =>
+        builder.Configuration["AWS:Service"] switch
         {
-            case "EC2":
-                return builder.Configuration["Authentication:Cognito:EC2ClientId"];
-
-            case "AppRunner":
-                return builder.Configuration["Authentication:Cognito:AppRunnerClientId"];
-
-            default:
-                return builder.Configuration["Authentication:Cognito:LocalClientId"];
-        }
-    }
+            "EC2" => builder.Configuration["Authentication:Cognito:EC2ClientId"],
+            "AppRunner" => builder.Configuration["Authentication:Cognito:AppRunnerClientId"],
+            _ => builder.Configuration["Authentication:Cognito:LocalClientId"],
+        };
 }
 
 public static class AuthenticationSetup
@@ -85,6 +78,7 @@ public static class AuthenticationSetup
 
                 x.Events.OnRedirectToIdentityProviderForSignOut = OnRedirectToIdentityProviderForSignOut;
                 x.Events.OnTokenValidated = SaveCustomerDetailsAsync;
+                //x.RequireHttpsMetadata = false;
             });
 
         return builder;

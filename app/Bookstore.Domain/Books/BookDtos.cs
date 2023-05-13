@@ -12,8 +12,8 @@ public record CreateBookDto(
     string Summary,
     decimal Price,
     int Quantity,
-    Stream CoverImage,
-    string CoverImageFileName);
+    Stream? CoverImage,
+    string? CoverImageFileName);
 
 public record UpdateBookDto(
     int BookId,
@@ -28,5 +28,5 @@ public record UpdateBookDto(
     string Summary,
     decimal Price,
     int Quantity,
-    Stream CoverImage,
-    string CoverImageFileName);
+    Stream? CoverImage,
+    string? CoverImageFileName);

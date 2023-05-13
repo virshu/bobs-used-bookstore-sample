@@ -114,7 +114,7 @@ public class BookRepository : IBookRepository
     {
         Book existing = await dbContext.Book.FindAsync(book.Id);
 
-        dbContext.Entry(existing).CurrentValues.SetValues(book);
+        dbContext.Entry(existing!).CurrentValues.SetValues(book);
 
         if (string.IsNullOrWhiteSpace(book.CoverImageUrl))
         {

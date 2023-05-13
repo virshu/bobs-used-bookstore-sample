@@ -2,5 +2,5 @@
 
 internal static class Constants
 {
-    internal static readonly string AppName = "BobsBookstore";
+    internal const string AppName = "BobsBookstore";
 }

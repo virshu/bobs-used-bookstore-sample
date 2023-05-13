@@ -108,12 +108,10 @@ public class InventoryController : AdminAreaControllerBase
 
             return RedirectToAction("Index");
         }
-        else
-        {
-            ModelState.AddModelError(nameof(model.CoverImage), result.ErrorMessage);
 
-            return await InvalidCreateUpdateView(model);
-        }
+        ModelState.AddModelError(nameof(model.CoverImage), result.ErrorMessage!);
+
+        return await InvalidCreateUpdateView(model);
     }
 
     private async Task<IActionResult> InvalidCreateUpdateView(InventoryCreateUpdateViewModel model)
