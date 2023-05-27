@@ -1,5 +1,4 @@
-﻿@using Bookstore.Web.ViewModel.Home
-@model Bookstore.Web.ViewModel.Home.HomeIndexViewModel
+﻿@model Bookstore.Web.ViewModel.Home.HomeIndexViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -11,12 +10,13 @@
             <figure style="background:url(/images/register.jpg)no-repeat;"></figure>
         </div>
         <div class="about-content">
-            <h2>Who We Are</h2>
-            <p>
-                We're a group of readers who have had the passion of reading books growing up.
-                Its time for us to share that passion with everyone, and offer pre-loved books of all genres
-                and categories to others to enjoy. Welcome to our store for used books. We hope you enjoy your visit!
+            <h2>Welcome!</h2>
+            <p>                
+                Welcome to Bob’s Used Books, your online destination for finding great deals on pre-loved books of all genres and topics. 
+                Whether you’re looking for a classic novel, a rare edition, a textbook, or a cookbook, you'll find it here. 
             </p>
+            <p>You can also sell your own books to us and earn some extra cash. At Bob’s Used Books, we believe that every book deserves a second chance.</p>
+            <p>Shop with us today and discover the joy of reading!</p>
             <div class="btn-sec">
                 <a class="btn black" asp-area="" asp-controller="Search" asp-action="Index">Shop Books</a>
             </div>
@@ -32,7 +32,7 @@
             <div class="row justify-content-center">
                 @if (Model.Books.Count > 0)
                 {
-                    foreach (HomeIndexItemViewModel book in Model.Books)
+                    foreach (var book in Model.Books)
                     {
                         <div class="col-lg-3 col-md-6">
                             <div class="item">
@@ -60,9 +60,9 @@
         <div class="about-content m-auto">
             <h2>Wish List</h2>
             <p>
-                Find a book that would be perfect for a friend? How about your parents or siblings or children?
-                Want a book but don't want to buy it yet? The Bookstore now features our very own wishlist!
-                Simply register an account and start adding books to your wishlist!
+                Found a book that would be perfect for a friend? How about your parents or siblings or children?
+                Want a book but don't want to buy it yet? The Bookstore now features a brand new wishlist!
+                Start adding books to your wishlist today.
             </p>
             <div class="btn-sec">
                 <a class="btn black" asp-area="" asp-controller="Wishlist" asp-action="Index">Wish List</a>
