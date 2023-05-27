@@ -31,7 +31,7 @@ public class LocalFileService : IFileService
 
         if (!Directory.Exists(imageFolder)) Directory.CreateDirectory(imageFolder);
 
-        using FileStream filestream = new(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
+        await using FileStream filestream = new(Path.Combine(imageFolder, uniqueFilename), FileMode.OpenOrCreate);
 
         await file.CopyToAsync(filestream);
 

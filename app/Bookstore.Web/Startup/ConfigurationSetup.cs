@@ -2,18 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace Bookstore.Web.Startup
-{
-    public static class ConfigurationSetup
-    {
-        public static WebApplicationBuilder ConfigureConfiguration(this WebApplicationBuilder builder)
-        {
-            if (!builder.Environment.IsDevelopment())
-            {
-                builder.Configuration.AddSystemsManager("/BobsBookstore/");
-            }
+namespace Bookstore.Web.Startup;
 
-            return builder;
+public static class ConfigurationSetup
+{
+    public static WebApplicationBuilder ConfigureConfiguration(this WebApplicationBuilder builder)
+    {
+        if (!builder.Environment.IsDevelopment())
+        {
+            builder.Configuration.AddSystemsManager("/BobsBookstore/");
         }
+
+        return builder;
     }
 }
