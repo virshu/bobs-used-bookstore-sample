@@ -46,9 +46,9 @@ public class OfferService : IOfferService
 
     public async Task CreateOfferAsync(CreateOfferDto dto)
     {
-        Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
+        Customer customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-        Offer? offer = new(
+        Offer offer = new(
             customer.Id,
             dto.BookName,
             dto.Author,
@@ -66,7 +66,7 @@ public class OfferService : IOfferService
 
     public async Task UpdateOfferStatusAsync(UpdateOfferStatusDto dto)
     {
-        Offer? offer = await GetOfferAsync(dto.OfferId);
+        Offer offer = await GetOfferAsync(dto.OfferId);
 
         offer.OfferStatus = dto.Status;
 
@@ -75,8 +75,5 @@ public class OfferService : IOfferService
         await offerRepository.SaveChangesAsync();
     }
 
-    public async Task<OfferStatistics> GetStatisticsAsync()
-    {
-        return (await offerRepository.GetStatisticsAsync()) ?? new OfferStatistics();
-    }
+    public async Task<OfferStatistics> GetStatisticsAsync() => await offerRepository.GetStatisticsAsync();
 }

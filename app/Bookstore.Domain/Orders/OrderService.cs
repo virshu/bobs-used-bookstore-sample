@@ -53,16 +53,16 @@ public class OrderService : IOrderService
 
     public async Task<OrderStatistics> GetStatisticsAsync()
     {
-        return (await orderRepository.GetStatisticsAsync()) ?? new OrderStatistics();
+        return await orderRepository.GetStatisticsAsync();
     }
 
     public async Task<int> CreateOrderAsync(CreateOrderDto dto)
     {
-        ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+        ShoppingCart shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
-        Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
+        Customer customer = await customerRepository.GetAsync(dto.CustomerSub);
 
-        Order? order = new(customer.Id, dto.AddressId);
+        Order order = new(customer.Id, dto.AddressId);
 
         await orderRepository.AddAsync(order);
 
@@ -84,7 +84,7 @@ public class OrderService : IOrderService
 
     public async Task UpdateOrderStatusAsync(UpdateOrderStatusDto dto)
     {
-        Order? order = await orderRepository.GetAsync(dto.OrderId);
+        Order order = await orderRepository.GetAsync(dto.OrderId);
 
         order.OrderStatus = dto.OrderStatus;
 
@@ -95,9 +95,7 @@ public class OrderService : IOrderService
 
     public async Task CancelOrderAsync(CancelOrderDto dto)
     {
-        Order? order = await orderRepository.GetAsync(dto.OrderId, dto.CustomerSub);
-
-        if (order == null) return;
+        Order order = await orderRepository.GetAsync(dto.OrderId, dto.CustomerSub);
 
         order.OrderStatus = OrderStatus.Cancelled;
 

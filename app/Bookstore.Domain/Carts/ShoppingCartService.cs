@@ -41,14 +41,7 @@ public class ShoppingCartService : IShoppingCartService
 
     private async Task AddToShoppingCartAsync(string correlationId, int bookId, int quantity, bool wantToBuy)
     {
-        ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(correlationId);
-
-        if (shoppingCart == null)
-        {
-            shoppingCart = new ShoppingCart(correlationId);
-
-            await shoppingCartRepository.AddAsync(shoppingCart);
-        }
+        ShoppingCart shoppingCart = await shoppingCartRepository.GetAsync(correlationId);
 
         if (wantToBuy)
         {
@@ -64,7 +57,7 @@ public class ShoppingCartService : IShoppingCartService
 
     public async Task MoveWishlistItemToShoppingCartAsync(MoveWishlistItemToShoppingCartDto dto)
     {
-        ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+        ShoppingCart shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
         shoppingCart.MoveWishListItemToShoppingCart(dto.ShoppingCartItemId);
 
@@ -73,9 +66,7 @@ public class ShoppingCartService : IShoppingCartService
 
     public async Task MoveAllWishlistItemsToShoppingCartAsync(MoveAllWishlistItemsToShoppingCartDto dto)
     {
-        ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
-
-        if (shoppingCart == null) return;
+        ShoppingCart shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
         foreach (ShoppingCartItem? wishListItem in shoppingCart.GetWishListItems())
         {
@@ -87,7 +78,7 @@ public class ShoppingCartService : IShoppingCartService
 
     public async Task DeleteShoppingCartItemAsync(DeleteShoppingCartItemDto dto)
     {
-        ShoppingCart? shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
+        ShoppingCart shoppingCart = await shoppingCartRepository.GetAsync(dto.CorrelationId);
 
         shoppingCart.RemoveShoppingCartItemById(dto.ShoppingCartItemId);
 

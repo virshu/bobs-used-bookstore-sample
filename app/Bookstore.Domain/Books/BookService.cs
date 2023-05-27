@@ -36,34 +36,22 @@ public class BookService : IBookService
         this.orderRepository = orderRepository;
     }
 
-    public async Task<Book> GetBookAsync(int id)
-    {
-        return await bookRepository.GetAsync(id);
-    }
+    public async Task<Book> GetBookAsync(int id) => await bookRepository.GetAsync(id);
 
-    public async Task<IPaginatedList<Book>> GetBooksAsync(BookFilters filters, int pageIndex, int pageSize)
-    {
-        return await bookRepository.ListAsync(filters, pageIndex, pageSize);
-    }
+    public async Task<IPaginatedList<Book>> GetBooksAsync(BookFilters filters, int pageIndex, int pageSize) => 
+        await bookRepository.ListAsync(filters, pageIndex, pageSize);
 
-    public async Task<IPaginatedList<Book>> GetBooksAsync(string searchString, string sortBy, int pageIndex, int pageSize)
-    {
-        return await bookRepository.ListAsync(searchString, sortBy, pageIndex, pageSize);
-    }
+    public async Task<IPaginatedList<Book>> GetBooksAsync(string searchString, string sortBy, int pageIndex, int pageSize) => 
+        await bookRepository.ListAsync(searchString, sortBy, pageIndex, pageSize);
 
-    public async Task<IEnumerable<Book>> ListBestSellingBooksAsync(int count)
-    {
-        return await orderRepository.ListBestSellingBooksAsync(count);
-    }
+    public async Task<IEnumerable<Book>> ListBestSellingBooksAsync(int count) => 
+        await orderRepository.ListBestSellingBooksAsync(count);
 
-    public async Task<BookStatistics> GetStatisticsAsync()
-    {
-        return (await bookRepository.GetStatisticsAsync()) ?? new BookStatistics();
-    }
+    public async Task<BookStatistics> GetStatisticsAsync() => await bookRepository.GetStatisticsAsync();
 
     public async Task<BookResult> AddAsync(CreateBookDto dto)
     {
-        Book? book = new(
+        Book book = new(
             dto.Name,
             dto.Author,
             dto.ISBN,
@@ -78,12 +66,12 @@ public class BookService : IBookService
 
         await bookRepository.AddAsync(book);
 
-        return await SaveAsync(book, dto.CoverImage, dto.CoverImageFileName);
+        return await SaveAsync(book, dto.CoverImage, dto.CoverImageFileName!);
     }
 
     public async Task<BookResult> UpdateAsync(UpdateBookDto dto)
     {
-        Book? book = await bookRepository.GetAsync(dto.BookId);
+        Book book = await bookRepository.GetAsync(dto.BookId);
 
         book.Name = dto.Name;
         book.Author = dto.Author;
@@ -100,7 +88,7 @@ public class BookService : IBookService
 
         await bookRepository.UpdateAsync(book);
 
-        return await SaveAsync(book, dto.CoverImage, dto.CoverImageFileName);
+        return await SaveAsync(book, dto.CoverImage, dto.CoverImageFileName!);
     }
 
     private async Task<BookResult> SaveAsync(Book book, Stream? coverImage, string coverImageFileName)
@@ -127,7 +115,7 @@ public class BookService : IBookService
 
     private async Task SaveImageAsync(Book book, Stream? coverImage, string? coverImageFilename)
     {
-        string? imageUrl = await fileService.SaveAsync(coverImage, coverImageFilename);
+        string imageUrl = await fileService.SaveAsync(coverImage, coverImageFilename);
 
         if (coverImage != null)
         {

@@ -2,7 +2,7 @@
 
 public class ShoppingCart : Entity
 {
-    public List<ShoppingCartItem> ShoppingCartItems { get; private set; } = new();
+    public List<ShoppingCartItem> ShoppingCartItems { get; } = new();
 
     public string CorrelationId { get; set; }
 
@@ -15,7 +15,7 @@ public class ShoppingCart : Entity
     {
         return filter == ShoppingCartItemFilter.IncludeOutOfStockItems ?
             ShoppingCartItems.Where(x => x.WantToBuy) :
-            ShoppingCartItems.Where(x => x.WantToBuy && x.Book.Quantity > 0);
+            ShoppingCartItems.Where(x => x is { WantToBuy: true, Book.Quantity: > 0 });
     }
 
     public IEnumerable<ShoppingCartItem> GetWishListItems()
@@ -44,7 +44,7 @@ public class ShoppingCart : Entity
 
     public void RemoveShoppingCartItemById(int shoppingCartItemId)
     {
-        ShoppingCartItem? shoppingCartItem = ShoppingCartItems.Single(x => x.Id == shoppingCartItemId);
+        ShoppingCartItem shoppingCartItem = ShoppingCartItems.Single(x => x.Id == shoppingCartItemId);
 
         ShoppingCartItems.Remove(shoppingCartItem);
     }

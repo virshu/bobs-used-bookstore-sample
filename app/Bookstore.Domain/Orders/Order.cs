@@ -15,10 +15,10 @@ public class Order : Entity
     private readonly List<OrderItem> orderItems = new();
 
     public int CustomerId { get; set; }
-    public Customer Customer { get; set; }
+    public Customer Customer { get; set; } = null!;
 
     public int AddressId { get; set; }
-    public Address Address { get; set; }
+    public Address Address { get; set; } = null!;
 
     public IEnumerable<OrderItem> OrderItems => orderItems;
 

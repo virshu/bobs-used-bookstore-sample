@@ -38,8 +38,8 @@ public class AddressService : IAddressService
 
     public async Task CreateAddressAsync(CreateAddressDto dto)
     {
-        Customer? customer = await customerRepository.GetAsync(dto.CustomerSub);
-        Address? address = new(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
+        Customer customer = await customerRepository.GetAsync(dto.CustomerSub);
+        Address address = new(customer, dto.AddressLine1, dto.AddressLine2, dto.City, dto.State, dto.Country, dto.ZipCode);
 
         await addressRepository.AddAsync(address);
 
@@ -48,7 +48,7 @@ public class AddressService : IAddressService
 
     public async Task UpdateAddressAsync(UpdateAddressDto dto)
     {
-        Address? address = await addressRepository.GetAsync(dto.CustomerSub, dto.AddressId);
+        Address address = await addressRepository.GetAsync(dto.CustomerSub, dto.AddressId);
 
         address.AddressLine1 = dto.AddressLine1;
         address.AddressLine2 = dto.AddressLine2;

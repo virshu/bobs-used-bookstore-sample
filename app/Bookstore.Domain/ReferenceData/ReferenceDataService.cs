@@ -39,7 +39,7 @@ public class ReferenceDataService : IReferenceDataService
 
     public async Task CreateAsync(CreateReferenceDataItemDto dto)
     {
-        ReferenceDataItem? referenceDataItem = new(dto.ReferenceDataType, dto.Text);
+        ReferenceDataItem referenceDataItem = new(dto.ReferenceDataType, dto.Text);
 
         await referenceDataRepository.AddAsync(referenceDataItem);
 
@@ -48,7 +48,7 @@ public class ReferenceDataService : IReferenceDataService
 
     public async Task UpdateAsync(UpdateReferenceDataItemDto dto)
     {
-        ReferenceDataItem? referenceDataItem = await referenceDataRepository.GetAsync(dto.Id);
+        ReferenceDataItem referenceDataItem = await referenceDataRepository.GetAsync(dto.Id);
 
         referenceDataItem.DataType = dto.ReferenceDataType;
         referenceDataItem.Text = dto.Text;
