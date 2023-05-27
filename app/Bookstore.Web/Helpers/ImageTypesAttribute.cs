@@ -26,8 +26,6 @@ public class ImageTypesAttribute : ValidationAttribute
         return imageTypes.Contains(extension, StringComparer.OrdinalIgnoreCase);
     }
 
-    public override string FormatErrorMessage(string name)
-    {
-        return $"{name} must be a PNG or JPG image.";
-    }
+    public override string FormatErrorMessage(string name) => 
+        $"{name} must be a PNG or JPG image.";
 }
